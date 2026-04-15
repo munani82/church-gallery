@@ -1,0 +1,33 @@
+name: Church Gallery Update
+
+on:
+  schedule:
+    - cron: '0 0,9 * * *' # 한국 시간 기준 오전 9시, 오후 6시 (하루 2번 실행)
+  workflow_dispatch: # 수동으로도 실행 가능하게 함
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 파이썬 설치
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: 필요한 도구 설치
+        run: |
+          pip install playwright
+          playwright install chromium
+
+      - name: 크롤링 실행
+        run: python crawl.py
+
+      - name: 변경사항 저장 (GitHub에 업데이트)
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add photos.json
+          git commit -m "자동 업데이트: 새 사진 추가" || echo "업데이트할 내용 없음"
+          git push
