@@ -3,109 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 보안 차단 방지 및 외부 링크 허용 설정 -->
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
     <title>서대구교회 최신 갤러리</title>
-    <!-- 구글 폰트 적용 -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #fafafa; /* 인스타그램 스타일 배경색 */
-            font-family: 'Noto Sans KR', sans-serif;
-            color: #262626;
-        }
-
-        /* 상단 헤더 */
-        header {
-            position: sticky;
-            top: 0;
-            background-color: #fff;
-            border-bottom: 1px solid #dbdbdb;
-            padding: 10px 0;
-            text-align: center;
-            z-index: 1000;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 1.2rem;
-            color: #262626;
-        }
-
-        /* 메인 피드 컨테이너 */
-        .feed-container {
-            max-width: 600px; /* 인스타그램 피드 너비 */
-            margin: 0 auto;
-            padding: 10px;
-        }
-
-        /* 개별 포스트 카드 */
-        .post-card {
-            background-color: #fff;
-            border: 1px solid #dbdbdb;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
-        /* 포스트 헤더 (제목) */
-        .post-header {
-            padding: 14px;
-            display: flex;
-            align-items: center;
-        }
-
-        .post-header .title {
-            font-weight: 700;
-            font-size: 0.95rem;
-        }
-
-        /* 이미지 영역 */
-        .post-image-container {
-            width: 100%;
-            background-color: #efefef;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 300px;
-        }
-
-        .post-image-container img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        /* 하단 설명 영역 */
-        .post-footer {
-            padding: 12px 14px;
-            border-top: 1px solid #fafafa;
-        }
-
-        .post-footer .caption {
-            font-size: 0.9rem;
-            line-height: 1.5;
-            color: #444;
-        }
-
-        /* 로딩 화면 */
-        #loading {
-            text-align: center;
-            padding: 50px;
-            color: #8e8e8e;
-        }
-
-        /* 모바일 대응 (화면이 작아질 때 패딩 조절) */
-        @media (max-width: 600px) {
-            .feed-container {
-                padding: 0;
-            }
-            .post-card {
-                border-radius: 0;
-                border-left: none;
-                border-right: none;
-            }
-        }
+        /* CSS는 이전과 동일하므로 생략하거나 그대로 사용하세요 */
+        body { margin: 0; padding: 0; background-color: #fafafa; font-family: 'Noto Sans KR', sans-serif; color: #262626; }
+        header { position: sticky; top: 0; background-color: #fff; border-bottom: 1px solid #dbdbdb; padding: 10px 0; text-align: center; z-index: 1000; }
+        header h1 { margin: 0; font-size: 1.2rem; }
+        .feed-container { max-width: 600px; margin: 0 auto; padding: 10px; }
+        .post-card { background-color: #fff; border: 1px solid #dbdbdb; border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
+        .post-header { padding: 14px; font-weight: 700; font-size: 0.95rem; }
+        .post-image-container { width: 100%; background-color: #efefef; min-height: 250px; }
+        .post-image-container img { width: 100%; height: auto; display: block; }
+        .post-footer { padding: 12px 14px; font-size: 0.9rem; color: #444; }
+        @media (max-width: 600px) { .post-card { border-radius: 0; border-left: none; border-right: none; } }
     </style>
 </head>
 <body>
@@ -115,47 +30,38 @@
     </header>
 
     <div class="feed-container" id="gallery-feed">
-        <div id="loading">사진을 불러오는 중입니다...</div>
+        <div id="loading" style="text-align:center; padding:50px;">사진을 불러오는 중입니다...</div>
     </div>
 
     <script>
-        // photos.json 파일을 읽어서 화면에 표시
         async function loadGallery() {
             try {
                 const response = await fetch('photos.json');
                 const data = await response.json();
-                
                 const feed = document.getElementById('gallery-feed');
-                feed.innerHTML = ''; // 로딩 메시지 제거
-
-                if (data.length === 0) {
-                    feed.innerHTML = '<div id="loading">새로운 사진이 없습니다.</div>';
-                    return;
-                }
+                feed.innerHTML = '';
 
                 data.forEach(item => {
                     const card = document.createElement('div');
                     card.className = 'post-card';
 
+                    // [핵심] 이미지 깨짐 방지를 위해 이미지 주소 앞에 프록시 서비스 추가
+                    // 주소가 http인 경우 보안 차단을 피하기 위해 weserv 서비스를 이용합니다.
+                    const safeImg = `https://images.weserv.nl/?url=${encodeURIComponent(item.img.replace('http://', ''))}`;
+
                     card.innerHTML = `
-                        <div class="post-header">
-                            <span class="title">${item.title}</span>
-                        </div>
+                        <div class="post-header">${item.title}</div>
                         <div class="post-image-container">
-                            <img src="${item.img}" alt="${item.title}" loading="lazy">
+                            <img src="${safeImg}" alt="${item.title}" onerror="this.src='${item.img}'">
                         </div>
-                        <div class="post-footer">
-                            <div class="caption">#서대구교회 #교회앨범</div>
-                        </div>
+                        <div class="post-footer">#서대구교회 #교회앨범</div>
                     `;
                     feed.appendChild(card);
                 });
             } catch (error) {
-                console.error('데이터 로딩 실패:', error);
-                document.getElementById('loading').innerText = '데이터를 불러오지 못했습니다.';
+                console.error('실패:', error);
             }
         }
-
         loadGallery();
     </script>
 </body>
