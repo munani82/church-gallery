@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>서대구교회 갤러리 뷰어</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f4; text-align: center; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; padding: 20px; }
+        .card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .card p { padding: 10px; font-size: 14px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>⛪ 교회 앨범 최신 사진</h1>
+    <div id="gallery" class="gallery">로딩 중...</div>
+
+    <script>
+        // photos.json 파일을 읽어서 화면에 표시
+        fetch('photos.json')
+            .then(res => res.json())
+            .then(data => {
+                const gallery = document.getElementById('gallery');
+                gallery.innerHTML = '';
+                data.forEach(item => {
+                    gallery.innerHTML += `
+                        <div class="card">
+                            <img src="${item.img}" alt="${item.title}">
+                            <p>${item.title}</p>
+                        </div>
+                    `;
+                });
+            });
+    </script>
+</body>
+</html>
