@@ -36,7 +36,7 @@
     <script>
         async function loadGallery() {
             try {
-                const response = await fetch('photos.json');
+                const response = await fetch('photos.json?v=' + new Date().getTime());
                 const data = await response.json();
                 const feed = document.getElementById('gallery-feed');
                 feed.innerHTML = '';
