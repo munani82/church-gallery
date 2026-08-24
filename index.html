@@ -430,16 +430,6 @@
             word-break: keep-all;
         }
 
-        .post-tags {
-            font-size: 0.82rem;
-            color: var(--accent-color);
-            font-weight: 500;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            word-break: keep-all;
-        }
-
         /* ─── Bottom Floating Search & Filter Dock ─── */
         .bottom-dock {
             position: fixed;
@@ -780,10 +770,6 @@
             .post-caption {
                 font-size: 0.9rem;
                 line-height: 1.5;
-            }
-
-            .post-tags {
-                font-size: 0.78rem;
             }
 
             .bottom-dock {
@@ -1139,11 +1125,6 @@
                     <div class="like-count">좋아요 <span class="like-num">${isLiked ? defaultLikeCount + 1 : defaultLikeCount}</span>개</div>
                     <div class="post-caption">
                         <span class="post-title-text">${post.title}</span>
-                    </div>
-                    <div class="post-tags">
-                        <span>#서대구제일교회</span>
-                        <span>#교회앨범</span>
-                        <span>#은혜와감사</span>
                     </div>
                 </div>
             `;
