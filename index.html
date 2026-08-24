@@ -223,22 +223,25 @@
             word-break: keep-all;
         }
 
-        /* Post Carousel Wrapper */
+        /* Post Carousel Wrapper (Dynamic Frame) */
         .carousel-wrapper {
             position: relative;
             width: 100%;
-            background-color: #0f172a;
+            background-color: var(--card-bg);
             user-select: none;
             overflow: hidden;
+            transition: height 0.28s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .carousel-track {
             display: flex;
+            align-items: flex-start;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
+            width: 100%;
         }
         .carousel-track::-webkit-scrollbar {
             display: none;
@@ -249,20 +252,16 @@
             width: 100%;
             scroll-snap-align: start;
             position: relative;
-            min-height: 360px;
-            max-height: 600px;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
-            background: #1e293b;
+            background: transparent;
             cursor: pointer;
         }
 
         .carousel-slide img {
             width: 100%;
             height: auto;
-            max-height: 600px;
-            object-fit: contain;
             display: block;
             transition: opacity 0.3s;
         }
@@ -741,12 +740,12 @@
             }
 
             .carousel-slide {
-                min-height: 280px;
-                max-height: 480px;
+                min-height: auto;
+                max-height: none;
             }
 
             .carousel-slide img {
-                max-height: 480px;
+                max-height: none;
             }
 
             .carousel-btn {
@@ -1091,6 +1090,7 @@
                         <img src="${safeUrl}" 
                              alt="${post.title} 사진 ${idx + 1}" 
                              loading="lazy"
+                             onload="onSlideImgLoad(this, ${idx})"
                              onerror="this.onerror=null; this.src='${imgUrl}';">
                     </div>
                 `;
@@ -1156,7 +1156,20 @@
             return card;
         }
 
-        // Carousel Scroll & Dot Update
+        // Slide Image Load Callback for adaptive height
+        function onSlideImgLoad(img, slideIndex) {
+            const wrapper = img.closest('.carousel-wrapper');
+            if (!wrapper) return;
+            const badge = wrapper.querySelector('.current-slide');
+            const currentIdx = badge ? parseInt(badge.textContent, 10) - 1 : 0;
+            if (slideIndex === currentIdx || slideIndex === 0) {
+                if (img.offsetHeight > 0) {
+                    wrapper.style.height = img.offsetHeight + 'px';
+                }
+            }
+        }
+
+        // Carousel Scroll & Dot Update + Dynamic Height Adjustment
         function handleTrackScroll(track) {
             const wrapper = track.closest('.carousel-wrapper');
             const total = parseInt(wrapper.dataset.total, 10);
@@ -1169,6 +1182,15 @@
             // Update badge
             const badgeCurrent = wrapper.querySelector('.current-slide');
             if (badgeCurrent) badgeCurrent.textContent = currentIndex + 1;
+
+            // Adapt wrapper height to the current slide image
+            const slides = track.querySelectorAll('.carousel-slide');
+            if (slides[currentIndex]) {
+                const img = slides[currentIndex].querySelector('img');
+                if (img && img.offsetHeight > 0) {
+                    wrapper.style.height = img.offsetHeight + 'px';
+                }
+            }
 
             // Update dots
             const card = wrapper.closest('.post-card');
