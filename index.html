@@ -326,26 +326,6 @@
             display: none;
         }
 
-        /* Double-tap Heart Animation */
-        .heart-popup {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            color: #ff3040;
-            font-size: 5rem;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 20;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
-        }
-
-        .heart-popup.animate {
-            transform: translate(-50%, -50%) scale(1.2);
-            opacity: 0.95;
-        }
-
         /* Post Action Bar */
         .post-actions {
             padding: 12px 16px 6px;
@@ -357,14 +337,14 @@
         .action-left {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
         }
 
         .action-btn {
             background: none;
             border: none;
-            font-size: 1.35rem;
-            color: #1e293b;
+            font-size: 1.3rem;
+            color: #475569;
             cursor: pointer;
             padding: 0;
             display: flex;
@@ -374,10 +354,11 @@
 
         .action-btn:hover {
             transform: scale(1.12);
+            color: var(--accent-color);
         }
 
-        .action-btn.liked {
-            color: var(--heart-color);
+        .action-btn.saved {
+            color: #e11d48;
         }
 
         /* Pagination Dots */
@@ -407,18 +388,9 @@
             padding: 8px 16px 16px;
         }
 
-        .like-count {
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-bottom: 6px;
-            color: var(--text-primary);
-            word-break: keep-all;
-        }
-
         .post-caption {
             font-size: 0.95rem;
             color: var(--text-primary);
-            margin-bottom: 8px;
             line-height: 1.55;
             word-break: keep-all;
             overflow-wrap: break-word;
@@ -1096,9 +1068,8 @@
             card.className = 'post-card';
             card.id = post.id;
 
-            const isLiked = likedPostIds.has(post.id);
+            const isSaved = likedPostIds.has(post.id);
             const imageCount = post.images.length;
-            const defaultLikeCount = (post.title.length * 3 + imageCount * 2) % 40 + 12;
 
             // Extract matching tags from title
             const matchedTags = extractTagsFromTitle(post.title);
@@ -1136,7 +1107,7 @@
                         </div>
                         <div class="author-meta">
                             <span class="author-name">서대구제일교회</span>
-                            <span class="post-category">${post.date ? '📅 ' + post.date : '교회 갤러리'}</span>
+                            <span class="post-category">${post.date ? '📅 ' + post.date : '교회 갤러리'} · 사진 ${imageCount}장</span>
                         </div>
                     </div>
                     <button class="action-btn" title="공유하기" onclick="sharePost('${post.title.replace(/'/g, "\\'")}', '${post.id}')">
@@ -1159,19 +1130,14 @@
                             <i class="fa-solid fa-chevron-right"></i>
                         </button>
                     ` : ''}
-
-                    <div class="heart-popup"><i class="fa-solid fa-heart"></i></div>
                 </div>
 
                 <div class="post-actions">
                     <div class="action-left">
-                        <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${post.id}', this)" aria-label="좋아요">
-                            <i class="${isLiked ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
+                        <button class="action-btn ${isSaved ? 'saved' : ''}" onclick="toggleSave('${post.id}', this)" title="보관함 저장">
+                            <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
                         </button>
-                        <button class="action-btn" onclick="focusComment('${post.id}')" aria-label="댓글">
-                            <i class="fa-regular fa-comment"></i>
-                        </button>
-                        <button class="action-btn" onclick="sharePost('${post.title.replace(/'/g, "\\'")}', '${post.id}')" aria-label="공유">
+                        <button class="action-btn" onclick="sharePost('${post.title.replace(/'/g, "\\'")}', '${post.id}')" title="링크 공유">
                             <i class="fa-regular fa-share-from-square"></i>
                         </button>
                     </div>
@@ -1180,30 +1146,12 @@
                 </div>
 
                 <div class="post-body">
-                    <div class="like-count">좋아요 <span class="like-num">${isLiked ? defaultLikeCount + 1 : defaultLikeCount}</span>개</div>
                     <div class="post-caption">
                         <span class="post-title-text">${post.title}</span>
                     </div>
                     ${tagsHtml}
                 </div>
             `;
-
-            // Double tap / click to heart animation on carousel wrapper
-            const wrapper = card.querySelector('.carousel-wrapper');
-            let lastTap = 0;
-            wrapper.addEventListener('click', (e) => {
-                const currentTime = new Date().getTime();
-                const tapLength = currentTime - lastTap;
-                if (tapLength < 300 && tapLength > 0) {
-                    triggerHeartAnimation(wrapper);
-                    const likeBtn = card.querySelector('.action-btn');
-                    if (!likedPostIds.has(post.id)) {
-                        toggleLike(post.id, likeBtn);
-                    }
-                    e.stopPropagation();
-                }
-                lastTap = currentTime;
-            });
 
             return card;
         }
@@ -1244,31 +1192,18 @@
             track.scrollBy({ left: direction * slideWidth, behavior: 'smooth' });
         }
 
-        // Heart animation popup
-        function triggerHeartAnimation(wrapper) {
-            const heart = wrapper.querySelector('.heart-popup');
-            heart.classList.remove('animate');
-            void heart.offsetWidth;
-            heart.classList.add('animate');
-            setTimeout(() => heart.classList.remove('animate'), 800);
-        }
-
-        // Toggle Like
-        function toggleLike(postId, btn) {
-            const card = btn.closest('.post-card');
-            const likeNumSpan = card.querySelector('.like-num');
-            let currentLikes = parseInt(likeNumSpan.textContent, 10);
-
+        // Toggle Save (Bookmark)
+        function toggleSave(postId, btn) {
             if (likedPostIds.has(postId)) {
                 likedPostIds.delete(postId);
-                btn.classList.remove('liked');
-                btn.querySelector('i').className = 'fa-regular fa-heart';
-                likeNumSpan.textContent = currentLikes - 1;
+                btn.classList.remove('saved');
+                btn.querySelector('i').className = 'fa-regular fa-bookmark';
+                showToast('보관함 저장이 취소되었습니다.');
             } else {
                 likedPostIds.add(postId);
-                btn.classList.add('liked');
-                btn.querySelector('i').className = 'fa-solid fa-heart';
-                likeNumSpan.textContent = currentLikes + 1;
+                btn.classList.add('saved');
+                btn.querySelector('i').className = 'fa-solid fa-bookmark';
+                showToast('사진이 내 보관함에 저장되었습니다 📌');
             }
             localStorage.setItem('church_liked_posts', JSON.stringify(Array.from(likedPostIds)));
         }
@@ -1315,10 +1250,6 @@
             } else {
                 showToast('링크가 복사되었습니다.');
             }
-        }
-
-        function focusComment(postId) {
-            showToast('교회 성도님들과 함께 은혜를 나눠보세요 ✨');
         }
 
         // Toast Helper
