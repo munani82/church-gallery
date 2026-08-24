@@ -44,6 +44,9 @@
             color: var(--text-primary);
             line-height: 1.5;
             padding-bottom: 60px;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+            -webkit-font-smoothing: antialiased;
         }
 
         /* ─── Sticky Header ─── */
@@ -65,6 +68,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 8px;
         }
 
         .logo-area {
@@ -73,11 +77,14 @@
             gap: 10px;
             text-decoration: none;
             color: inherit;
+            min-width: 0;
+            flex-shrink: 1;
         }
 
         .logo-icon {
             width: 36px;
             height: 36px;
+            min-width: 36px;
             background: linear-gradient(135deg, #0284c7, #38bdf8);
             border-radius: 10px;
             display: flex;
@@ -88,10 +95,18 @@
             box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
         }
 
+        .logo-text {
+            min-width: 0;
+        }
+
         .logo-text h1 {
             font-size: 1.05rem;
             font-weight: 700;
             letter-spacing: -0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: keep-all;
         }
 
         .logo-text span {
@@ -99,12 +114,16 @@
             color: var(--text-secondary);
             display: block;
             margin-top: -2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            flex-shrink: 0;
         }
 
         .refresh-btn, .origin-btn {
@@ -122,6 +141,7 @@
             transition: all 0.2s ease;
             text-decoration: none;
             background-color: #fff;
+            white-space: nowrap;
         }
 
         .refresh-btn:hover, .origin-btn:hover {
@@ -152,6 +172,7 @@
             outline: none;
             transition: all 0.2s ease;
             box-shadow: var(--shadow-sm);
+            word-break: keep-all;
         }
 
         .search-box input:focus {
@@ -172,8 +193,9 @@
             display: flex;
             gap: 8px;
             overflow-x: auto;
-            padding-bottom: 4px;
+            padding-bottom: 6px;
             scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
         }
         .tags-container::-webkit-scrollbar {
             display: none;
@@ -190,6 +212,8 @@
             color: var(--text-secondary);
             cursor: pointer;
             transition: all 0.2s;
+            flex-shrink: 0;
+            word-break: keep-all;
         }
 
         .tag-chip.active {
@@ -214,6 +238,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            word-break: keep-all;
         }
 
         /* ─── Instagram Card ─── */
@@ -237,17 +262,20 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 8px;
         }
 
         .author-info {
             display: flex;
             align-items: center;
             gap: 12px;
+            min-width: 0;
         }
 
         .author-avatar {
             width: 40px;
             height: 40px;
+            min-width: 40px;
             border-radius: 50%;
             background: linear-gradient(135deg, #e0f2fe, #bae6fd);
             color: #0369a1;
@@ -262,17 +290,20 @@
         .author-meta {
             display: flex;
             flex-direction: column;
+            min-width: 0;
         }
 
         .author-name {
             font-weight: 700;
             font-size: 0.95rem;
             color: var(--text-primary);
+            word-break: keep-all;
         }
 
         .post-category {
             font-size: 0.78rem;
             color: var(--text-secondary);
+            word-break: keep-all;
         }
 
         /* Post Carousel Wrapper */
@@ -464,17 +495,22 @@
             font-weight: 700;
             margin-bottom: 6px;
             color: var(--text-primary);
+            word-break: keep-all;
         }
 
         .post-caption {
-            font-size: 0.92rem;
+            font-size: 0.95rem;
             color: var(--text-primary);
             margin-bottom: 8px;
-            line-height: 1.45;
+            line-height: 1.55;
+            word-break: keep-all;
+            overflow-wrap: break-word;
         }
 
         .post-caption .post-title-text {
             font-weight: 600;
+            letter-spacing: -0.2px;
+            word-break: keep-all;
         }
 
         .post-tags {
@@ -484,6 +520,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
+            word-break: keep-all;
         }
 
         /* ─── Lightbox Modal ─── */
@@ -522,7 +559,7 @@
 
         .lightbox-img-wrapper {
             max-width: 92vw;
-            max-height: 82vh;
+            max-height: 80vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -530,7 +567,7 @@
 
         .lightbox-img-wrapper img {
             max-width: 100%;
-            max-height: 82vh;
+            max-height: 80vh;
             object-fit: contain;
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -539,13 +576,16 @@
         .lightbox-title {
             color: #e2e8f0;
             margin-top: 14px;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
+            line-height: 1.5;
             text-align: center;
-            max-width: 80vw;
+            max-width: 86vw;
+            word-break: keep-all;
+            overflow-wrap: break-word;
         }
 
         .lightbox-actions {
-            margin-top: 10px;
+            margin-top: 12px;
             display: flex;
             gap: 12px;
         }
@@ -562,6 +602,7 @@
             align-items: center;
             gap: 6px;
             transition: background-color 0.2s;
+            word-break: keep-all;
         }
 
         .lightbox-btn:hover {
@@ -629,6 +670,8 @@
             opacity: 0;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: var(--shadow-lg);
+            word-break: keep-all;
+            white-space: nowrap;
         }
 
         .toast.show {
@@ -636,20 +679,99 @@
             opacity: 1;
         }
 
-        /* Mobile full-width cards */
+        /* ─── Mobile Viewport Optimization (max-width: 640px) ─── */
         @media (max-width: 640px) {
-            .feed-container, .filter-section {
-                padding: 8px 10px;
+            .header-content {
+                padding: 10px 12px;
             }
+
+            .logo-icon {
+                width: 32px;
+                height: 32px;
+                min-width: 32px;
+                font-size: 0.95rem;
+                border-radius: 8px;
+            }
+
+            .logo-text h1 {
+                font-size: 0.92rem;
+            }
+
+            .logo-text span {
+                font-size: 0.7rem;
+            }
+
+            .refresh-btn, .origin-btn {
+                padding: 5px 8px;
+                font-size: 0.75rem;
+                gap: 4px;
+            }
+
+            .feed-container, .filter-section {
+                padding: 8px 12px;
+            }
+
             .post-card {
-                border-radius: 12px;
+                border-radius: 14px;
                 margin-bottom: 18px;
             }
+
+            .post-header {
+                padding: 12px 14px;
+            }
+
+            .author-avatar {
+                width: 36px;
+                height: 36px;
+                min-width: 36px;
+                font-size: 0.95rem;
+            }
+
+            .author-name {
+                font-size: 0.9rem;
+            }
+
+            .post-category {
+                font-size: 0.75rem;
+            }
+
             .carousel-slide {
                 min-height: 280px;
+                max-height: 480px;
             }
+
+            .carousel-slide img {
+                max-height: 480px;
+            }
+
             .carousel-btn {
-                display: none; /* Hide hover buttons on mobile, touch swipe is natural */
+                display: none; /* Hide hover buttons on touch devices */
+            }
+
+            .post-actions {
+                padding: 10px 14px 4px;
+            }
+
+            .action-btn {
+                font-size: 1.25rem;
+            }
+
+            .post-body {
+                padding: 6px 14px 14px;
+            }
+
+            .post-caption {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+
+            .post-tags {
+                font-size: 0.78rem;
+            }
+
+            .tag-chip {
+                padding: 5px 12px;
+                font-size: 0.78rem;
             }
         }
     </style>
