@@ -14,6 +14,9 @@
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     
+    <!-- Puter.js Serverless Cloud KV DB -->
+    <script src="https://js.puter.com/v2/"></script>
+    
     <style>
         :root {
             --bg-color: #f8fafc;
@@ -357,8 +360,12 @@
             color: var(--accent-color);
         }
 
+        .action-btn.liked {
+            color: #ef4444;
+        }
+
         .action-btn.saved {
-            color: #e11d48;
+            color: #0284c7;
         }
 
         /* Pagination Dots */
@@ -386,6 +393,22 @@
         /* Post Body & Caption */
         .post-body {
             padding: 8px 16px 16px;
+        }
+
+        .like-stats {
+            font-size: 0.86rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            user-select: none;
+        }
+
+        .like-stats i {
+            color: #ef4444;
+            font-size: 0.85rem;
         }
 
         .post-caption {
@@ -874,7 +897,8 @@
         const PAGE_SIZE = 8;
         let activeTag = 'all';
         let searchQuery = '';
-        const likedPostIds = new Set(JSON.parse(localStorage.getItem('church_liked_posts') || '[]'));
+        const userSavedIds = new Set(JSON.parse(localStorage.getItem('church_saved_posts') || '[]'));
+        const userLikedIds = new Set(JSON.parse(localStorage.getItem('church_user_likes') || '[]'));
 
         // 교회 주요 행사/부서 키워드 사전 (실제 글에 등장하는 것만 자동 추출)
         const KEYWORD_CANDIDATES = [
@@ -882,6 +906,67 @@
             '성경학교', '수련회', '헌신예배', '부흥회', '야유회', '찬양',
             '세례식', '임직식', '구역', '주일학교', '체육대회', '성탄', '부활절', '새가족'
         ];
+
+        // Safe DB Key generator from post title
+        function getPostDbKey(post) {
+            return 'like_' + encodeURIComponent(post.title).slice(0, 50).replace(/%/g, '_');
+        }
+
+        // Real cloud DB like loader
+        async function loadRealLikes(post) {
+            try {
+                if (window.puter && puter.kv) {
+                    const dbKey = getPostDbKey(post);
+                    const val = await puter.kv.get(dbKey);
+                    const count = parseInt(val, 10) || 0;
+                    const countEl = document.getElementById(`like-count-${post.id}`);
+                    if (countEl) countEl.textContent = count.toLocaleString();
+                }
+            } catch (e) {
+                console.warn('Like count load error:', e);
+            }
+        }
+
+        // Real cloud DB like toggle
+        async function toggleRealLike(postId, title, btn) {
+            const isLiked = userLikedIds.has(postId);
+            const countEl = document.getElementById(`like-count-${postId}`);
+            let currentCount = parseInt(countEl ? countEl.textContent.replace(/,/g, '') : '0', 10) || 0;
+            const dbKey = 'like_' + encodeURIComponent(title).slice(0, 50).replace(/%/g, '_');
+
+            if (isLiked) {
+                userLikedIds.delete(postId);
+                btn.classList.remove('liked');
+                btn.querySelector('i').className = 'fa-regular fa-heart';
+                const nextCount = Math.max(0, currentCount - 1);
+                if (countEl) countEl.textContent = nextCount.toLocaleString();
+                showToast('좋아요가 취소되었습니다.');
+
+                try {
+                    if (window.puter && puter.kv) {
+                        await puter.kv.decr(dbKey, 1);
+                    }
+                } catch (e) {
+                    console.warn(e);
+                }
+            } else {
+                userLikedIds.add(postId);
+                btn.classList.add('liked');
+                btn.querySelector('i').className = 'fa-solid fa-heart';
+                const nextCount = currentCount + 1;
+                if (countEl) countEl.textContent = nextCount.toLocaleString();
+                showToast('좋아요를 눌렀습니다! ❤️');
+
+                try {
+                    if (window.puter && puter.kv) {
+                        await puter.kv.incr(dbKey, 1);
+                    }
+                } catch (e) {
+                    console.warn(e);
+                }
+            }
+            localStorage.setItem('church_user_likes', JSON.stringify(Array.from(userLikedIds)));
+        }
 
         // Image proxy helper
         function getSafeImageUrl(url) {
@@ -1057,6 +1142,11 @@
             feed.appendChild(fragment);
             renderedCount += nextBatch.length;
 
+            // Load real cloud DB likes for this batch
+            nextBatch.forEach(post => {
+                loadRealLikes(post);
+            });
+
             if (renderedCount >= filteredPosts.length) {
                 document.getElementById('infinite-scroll-trigger').style.display = 'none';
             }
@@ -1068,7 +1158,8 @@
             card.className = 'post-card';
             card.id = post.id;
 
-            const isSaved = likedPostIds.has(post.id);
+            const isLiked = userLikedIds.has(post.id);
+            const isSaved = userSavedIds.has(post.id);
             const imageCount = post.images.length;
 
             // Extract matching tags from title
@@ -1134,6 +1225,9 @@
 
                 <div class="post-actions">
                     <div class="action-left">
+                        <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleRealLike('${post.id}', '${post.title.replace(/'/g, "\\'")}', this)" title="좋아요">
+                            <i class="${isLiked ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
+                        </button>
                         <button class="action-btn ${isSaved ? 'saved' : ''}" onclick="toggleSave('${post.id}', this)" title="보관함 저장">
                             <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
                         </button>
@@ -1146,6 +1240,9 @@
                 </div>
 
                 <div class="post-body">
+                    <div class="like-stats">
+                        <i class="fa-solid fa-heart"></i> 좋아요 <span id="like-count-${post.id}">0</span>개
+                    </div>
                     <div class="post-caption">
                         <span class="post-title-text">${post.title}</span>
                     </div>
@@ -1194,18 +1291,18 @@
 
         // Toggle Save (Bookmark)
         function toggleSave(postId, btn) {
-            if (likedPostIds.has(postId)) {
-                likedPostIds.delete(postId);
+            if (userSavedIds.has(postId)) {
+                userSavedIds.delete(postId);
                 btn.classList.remove('saved');
                 btn.querySelector('i').className = 'fa-regular fa-bookmark';
                 showToast('보관함 저장이 취소되었습니다.');
             } else {
-                likedPostIds.add(postId);
+                userSavedIds.add(postId);
                 btn.classList.add('saved');
                 btn.querySelector('i').className = 'fa-solid fa-bookmark';
                 showToast('사진이 내 보관함에 저장되었습니다 📌');
             }
-            localStorage.setItem('church_liked_posts', JSON.stringify(Array.from(likedPostIds)));
+            localStorage.setItem('church_saved_posts', JSON.stringify(Array.from(userSavedIds)));
         }
 
         // Lightbox functions
