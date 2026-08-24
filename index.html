@@ -430,6 +430,32 @@
             word-break: keep-all;
         }
 
+        .post-tags {
+            margin-top: 6px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            word-break: keep-all;
+        }
+
+        .tag-link {
+            font-size: 0.84rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s;
+            user-select: none;
+        }
+
+        .tag-link:hover {
+            opacity: 0.75;
+            text-decoration: underline;
+        }
+
+        .tag-link:active {
+            transform: scale(0.95);
+        }
+
         /* ─── Bottom Floating Search & Filter Dock ─── */
         .bottom-dock {
             position: fixed;
@@ -923,6 +949,29 @@
             return '';
         }
 
+        // 제목에서 포함된 키워드 태그 목록 자동 추출
+        function extractTagsFromTitle(title) {
+            const matched = [];
+            KEYWORD_CANDIDATES.forEach(keyword => {
+                if (title.includes(keyword)) {
+                    matched.push(keyword);
+                }
+            });
+            return matched;
+        }
+
+        // 게시글 내 태그 클릭 시 즉시 해당 태그로 필터링
+        function clickPostTag(tag) {
+            activeTag = tag;
+            const chips = document.querySelectorAll('.tag-chip');
+            chips.forEach(c => {
+                c.classList.toggle('active', c.dataset.filter === tag);
+            });
+            applyFilter();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showToast(`'#${tag}' 게시글로 필터링되었습니다.`);
+        }
+
         // 글 목록에서 실제 존재하는 카테고리 태그를 동적으로 추출하여 단추 생성
         function generateDynamicTags(posts) {
             const counts = {};
@@ -1051,6 +1100,15 @@
             const imageCount = post.images.length;
             const defaultLikeCount = (post.title.length * 3 + imageCount * 2) % 40 + 12;
 
+            // Extract matching tags from title
+            const matchedTags = extractTagsFromTitle(post.title);
+            let tagsHtml = '';
+            if (matchedTags.length > 0) {
+                tagsHtml = `<div class="post-tags">` + 
+                    matchedTags.map(t => `<span class="tag-link" onclick="clickPostTag('${t}')">#${t}</span>`).join('') + 
+                    `</div>`;
+            }
+
             // Generate slides HTML
             let slidesHtml = '';
             let dotsHtml = '';
@@ -1126,6 +1184,7 @@
                     <div class="post-caption">
                         <span class="post-title-text">${post.title}</span>
                     </div>
+                    ${tagsHtml}
                 </div>
             `;
 
