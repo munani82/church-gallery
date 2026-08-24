@@ -2,67 +2,1166 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- 보안 차단 방지 및 외부 링크 허용 설정 -->
     <meta name="referrer" content="no-referrer">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
-    <title>서대구제일교회 최신 갤러리</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <title>서대구제일교회 사진 갤러리</title>
+    <meta name="description" content="서대구제일교회 최신 활동 및 예배 사진 갤러리">
+    
+    <!-- Pretendard Font & FontAwesome Icons CDN -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    
     <style>
-        /* CSS는 이전과 동일하므로 생략하거나 그대로 사용하세요 */
-        body { margin: 0; padding: 0; background-color: #fafafa; font-family: 'Noto Sans KR', sans-serif; color: #262626; }
-        header { position: sticky; top: 0; background-color: #fff; border-bottom: 1px solid #dbdbdb; padding: 10px 0; text-align: center; z-index: 1000; }
-        header h1 { margin: 0; font-size: 1.2rem; }
-        .feed-container { max-width: 600px; margin: 0 auto; padding: 10px; }
-        .post-card { background-color: #fff; border: 1px solid #dbdbdb; border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
-        .post-header { padding: 14px; font-weight: 700; font-size: 0.95rem; }
-        .post-image-container { width: 100%; background-color: #efefef; min-height: 250px; }
-        .post-image-container img { width: 100%; height: auto; display: block; }
-        .post-footer { padding: 12px 14px; font-size: 0.9rem; color: #444; }
-        @media (max-width: 600px) { .post-card { border-radius: 0; border-left: none; border-right: none; } }
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --header-bg: rgba(255, 255, 255, 0.92);
+            --border-color: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --accent-color: #0284c7;
+            --accent-hover: #0369a1;
+            --heart-color: #ef4444;
+            --card-radius: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 25px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding-bottom: 60px;
+        }
+
+        /* ─── Sticky Header ─── */
+        header {
+            position: sticky;
+            top: 0;
+            background-color: var(--header-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .header-content {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #0284c7, #38bdf8);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+        }
+
+        .logo-text h1 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .logo-text span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            display: block;
+            margin-top: -2px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .refresh-btn, .origin-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            background-color: #fff;
+        }
+
+        .refresh-btn:hover, .origin-btn:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        /* ─── Search & Category Bar ─── */
+        .filter-section {
+            max-width: 680px;
+            margin: 16px auto 8px;
+            padding: 0 16px;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 14px 10px 38px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .tags-container {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+        .tags-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tag-chip {
+            white-space: nowrap;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tag-chip.active {
+            background-color: var(--accent-color);
+            color: #ffffff;
+            border-color: var(--accent-color);
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+        }
+
+        /* ─── Feed Container ─── */
+        .feed-container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 12px 16px;
+        }
+
+        .feed-stats {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* ─── Instagram Card ─── */
+        .post-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--card-radius);
+            margin-bottom: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .post-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Post Header */
+        .post-header {
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+            color: #0369a1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .author-meta {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        .post-category {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        /* Post Carousel Wrapper */
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            background-color: #0f172a;
+            user-select: none;
+            overflow: hidden;
+        }
+
+        .carousel-track {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .carousel-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-slide {
+            flex: 0 0 100%;
+            width: 100%;
+            scroll-snap-align: start;
+            position: relative;
+            min-height: 360px;
+            max-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1e293b;
+            cursor: pointer;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: auto;
+            max-height: 600px;
+            object-fit: contain;
+            display: block;
+            transition: opacity 0.3s;
+        }
+
+        /* Slide Overlay Badge (1/5) */
+        .slide-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background-color: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(4px);
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 12px;
+            z-index: 10;
+            letter-spacing: 0.5px;
+        }
+
+        /* Carousel Navigation Buttons */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
+            border: none;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: all 0.2s;
+            opacity: 0;
+        }
+
+        .carousel-wrapper:hover .carousel-btn {
+            opacity: 1;
+        }
+
+        .carousel-btn:hover {
+            background-color: #ffffff;
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        .carousel-btn.prev {
+            left: 12px;
+        }
+
+        .carousel-btn.next {
+            right: 12px;
+        }
+
+        .carousel-btn:disabled {
+            display: none;
+        }
+
+        /* Double-tap Heart Animation */
+        .heart-popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            color: #ff3040;
+            font-size: 5rem;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+        }
+
+        .heart-popup.animate {
+            transform: translate(-50%, -50%) scale(1.2);
+            opacity: 0.95;
+        }
+
+        /* Post Action Bar */
+        .post-actions {
+            padding: 12px 16px 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .action-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            font-size: 1.35rem;
+            color: #1e293b;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            transition: transform 0.15s ease, color 0.15s ease;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.12);
+        }
+
+        .action-btn.liked {
+            color: var(--heart-color);
+        }
+
+        /* Pagination Dots */
+        .carousel-dots {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #cbd5e1;
+            transition: all 0.25s ease;
+        }
+
+        .dot.active {
+            background-color: var(--accent-color);
+            width: 16px;
+            border-radius: 4px;
+        }
+
+        /* Post Body & Caption */
+        .post-body {
+            padding: 8px 16px 16px;
+        }
+
+        .like-count {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .post-caption {
+            font-size: 0.92rem;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.45;
+        }
+
+        .post-caption .post-title-text {
+            font-weight: 600;
+        }
+
+        .post-tags {
+            font-size: 0.82rem;
+            color: var(--accent-color);
+            font-weight: 500;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        /* ─── Lightbox Modal ─── */
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #fff;
+            font-size: 1.8rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 10001;
+        }
+
+        .lightbox-img-wrapper {
+            max-width: 92vw;
+            max-height: 82vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-img-wrapper img {
+            max-width: 100%;
+            max-height: 82vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-title {
+            color: #e2e8f0;
+            margin-top: 14px;
+            font-size: 0.95rem;
+            text-align: center;
+            max-width: 80vw;
+        }
+
+        .lightbox-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .lightbox-btn {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .lightbox-btn:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* ─── Skeleton Loading ─── */
+        .skeleton-card {
+            background-color: #fff;
+            border-radius: var(--card-radius);
+            border: 1px solid var(--border-color);
+            margin-bottom: 24px;
+            padding: 16px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        .skeleton-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .skeleton-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e2e8f0;
+        }
+
+        .skeleton-title {
+            width: 50%;
+            height: 16px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+        }
+
+        .skeleton-media {
+            width: 100%;
+            height: 320px;
+            background-color: #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* ─── Toast Alert ─── */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background-color: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(8px);
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 24px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Mobile full-width cards */
+        @media (max-width: 640px) {
+            .feed-container, .filter-section {
+                padding: 8px 10px;
+            }
+            .post-card {
+                border-radius: 12px;
+                margin-bottom: 18px;
+            }
+            .carousel-slide {
+                min-height: 280px;
+            }
+            .carousel-btn {
+                display: none; /* Hide hover buttons on mobile, touch swipe is natural */
+            }
+        }
     </style>
 </head>
 <body>
 
+    <!-- Header -->
     <header>
-        <h1>⛪ 서대구제일교회 최신 갤러리</h1>
+        <div class="header-content">
+            <a href="#" class="logo-area" onclick="window.scrollTo({top:0, behavior:'smooth'}); return false;">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-church"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>서대구제일교회 갤러리</h1>
+                    <span>Seodaegu First Church Album</span>
+                </div>
+            </a>
+            <div class="header-actions">
+                <button class="refresh-btn" onclick="fetchPhotos(true)">
+                    <i class="fa-solid fa-rotate-right"></i> 새로고침
+                </button>
+                <a href="http://www.seodaegu.net/main/sub.html?pageCode=25" target="_blank" rel="noopener noreferrer" class="origin-btn">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> 원본게시판
+                </a>
+            </div>
+        </div>
     </header>
 
-    <div class="feed-container" id="gallery-feed">
-        <div id="loading" style="text-align:center; padding:50px;">사진을 불러오는 중입니다...</div>
+    <!-- Search & Filter Section -->
+    <section class="filter-section">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="search-input" placeholder="게시글 제목, 행사명, 날짜 검색..." autocomplete="off">
+        </div>
+        <div class="tags-container" id="tags-container">
+            <button class="tag-chip active" data-filter="all">전체보기</button>
+            <button class="tag-chip" data-filter="청년부">청년부</button>
+            <button class="tag-chip" data-filter="성경학교">성경학교</button>
+            <button class="tag-chip" data-filter="헌신예배">헌신예배</button>
+            <button class="tag-chip" data-filter="유초등부">유초등부</button>
+            <button class="tag-chip" data-filter="수련회">수련회</button>
+            <button class="tag-chip" data-filter="예배">예배</button>
+        </div>
+    </section>
+
+    <!-- Feed Container -->
+    <main class="feed-container">
+        <div class="feed-stats">
+            <span id="posts-count">게시글 불러오는 중...</span>
+            <span id="photos-total-count"></span>
+        </div>
+        
+        <div id="gallery-feed">
+            <!-- Skeleton cards while loading -->
+            <div class="skeleton-card">
+                <div class="skeleton-header">
+                    <div class="skeleton-avatar"></div>
+                    <div class="skeleton-title"></div>
+                </div>
+                <div class="skeleton-media"></div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skeleton-header">
+                    <div class="skeleton-avatar"></div>
+                    <div class="skeleton-title"></div>
+                </div>
+                <div class="skeleton-media"></div>
+            </div>
+        </div>
+
+        <div id="infinite-scroll-trigger" style="height: 40px; text-align: center; color: #94a3b8; font-size: 0.85rem; padding: 10px;">
+            불러오는 중...
+        </div>
+    </main>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox-modal" id="lightbox-modal" onclick="closeLightbox(event)">
+        <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+        <div class="lightbox-img-wrapper">
+            <img id="lightbox-img" src="" alt="확대 사진">
+        </div>
+        <div class="lightbox-title" id="lightbox-title"></div>
+        <div class="lightbox-actions">
+            <a id="lightbox-origin-link" href="#" target="_blank" class="lightbox-btn" download>
+                <i class="fa-solid fa-download"></i> 원본 저장
+            </a>
+            <button class="lightbox-btn" onclick="shareCurrentPhoto()">
+                <i class="fa-solid fa-share-nodes"></i> 링크 복사
+            </button>
+        </div>
     </div>
 
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">알림 메시지</div>
+
     <script>
-        async function loadGallery() {
+        // State
+        let allPosts = [];
+        let filteredPosts = [];
+        let renderedCount = 0;
+        const PAGE_SIZE = 8;
+        let activeTag = 'all';
+        let searchQuery = '';
+        const likedPostIds = new Set(JSON.parse(localStorage.getItem('church_liked_posts') || '[]'));
+
+        // Image proxy helper
+        function getSafeImageUrl(url) {
+            if (!url) return '';
+            const cleanUrl = url.replace(/^https?:\/\//i, '');
+            return `https://images.weserv.nl/?url=${encodeURIComponent(cleanUrl)}`;
+        }
+
+        // Group flat photos into posts by title
+        function groupPhotosByTitle(flatPhotos) {
+            const posts = [];
+            let currentPost = null;
+
+            flatPhotos.forEach((item, index) => {
+                const title = (item.title || '서대구제일교회 사진').trim();
+                
+                if (currentPost && currentPost.title === title) {
+                    currentPost.images.push(item.img);
+                } else {
+                    currentPost = {
+                        id: 'post-' + index + '-' + Math.random().toString(36).substr(2, 5),
+                        title: title,
+                        images: [item.img],
+                        date: extractDate(title)
+                    };
+                    posts.push(currentPost);
+                }
+            });
+
+            return posts;
+        }
+
+        // Extract date string from title if present
+        function extractDate(title) {
+            const match = title.match(/\((\d{1,2}\.\d{1,2}\.?\d{0,2}[^)]*)\)/);
+            if (match) return match[1];
+            return '';
+        }
+
+        // Fetch photos from JSON
+        async function fetchPhotos(isRefresh = false) {
+            const feed = document.getElementById('gallery-feed');
+            if (isRefresh) {
+                showToast('최신 사진을 동기화하고 있습니다...');
+            }
+
             try {
-                const response = await fetch('photos.json?v=' + new Date().getTime());
-                const data = await response.json();
-                const feed = document.getElementById('gallery-feed');
-                feed.innerHTML = '';
+                const response = await fetch('photos.json?v=' + Date.now());
+                if (!response.ok) throw new Error('데이터 로드 실패');
+                const rawPhotos = await response.json();
 
-                data.forEach(item => {
-                    const card = document.createElement('div');
-                    card.className = 'post-card';
+                allPosts = groupPhotosByTitle(rawPhotos);
+                applyFilter();
 
-                    // [핵심] 이미지 깨짐 방지를 위해 이미지 주소 앞에 프록시 서비스 추가
-                    // 주소가 http인 경우 보안 차단을 피하기 위해 weserv 서비스를 이용합니다.
-                    const safeImg = `https://images.weserv.nl/?url=${encodeURIComponent(item.img.replace('http://', ''))}`;
-
-                    card.innerHTML = `
-                        <div class="post-header">${item.title}</div>
-                        <div class="post-image-container">
-                            <img src="${safeImg}" alt="${item.title}" onerror="this.src='${item.img}'">
-                        </div>
-                        <div class="post-footer">#서대구제일교회 #교회앨범</div>
-                    `;
-                    feed.appendChild(card);
-                });
-            } catch (error) {
-                console.error('실패:', error);
+                const totalPhotosCount = rawPhotos.length;
+                document.getElementById('photos-total-count').textContent = `총 ${totalPhotosCount.toLocaleString()}장의 사진`;
+                
+                if (isRefresh) {
+                    showToast('최신 사진 목록을 불러왔습니다!');
+                }
+            } catch (err) {
+                console.error(err);
+                feed.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: #ef4444;">
+                        <i class="fa-solid fa-circle-exclamation" style="font-size: 2rem; margin-bottom: 12px;"></i>
+                        <p>사진 데이터를 불러오는데 실패했습니다.</p>
+                        <button onclick="fetchPhotos(true)" style="margin-top:12px; padding: 8px 16px; border-radius: 8px; background: #0284c7; color:#fff; border:none; cursor:pointer;">
+                            다시 시도
+                        </button>
+                    </div>
+                `;
             }
         }
-        loadGallery();
+
+        // Filter and Search logic
+        function applyFilter() {
+            filteredPosts = allPosts.filter(post => {
+                const matchesTag = (activeTag === 'all') || post.title.includes(activeTag);
+                const matchesSearch = !searchQuery || post.title.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesTag && matchesSearch;
+            });
+
+            renderedCount = 0;
+            const feed = document.getElementById('gallery-feed');
+            feed.innerHTML = '';
+
+            document.getElementById('posts-count').textContent = `게시물 ${filteredPosts.length}개`;
+
+            if (filteredPosts.length === 0) {
+                feed.innerHTML = `
+                    <div style="text-align: center; padding: 60px 20px; color: #64748b;">
+                        <i class="fa-solid fa-images" style="font-size: 2.5rem; margin-bottom: 14px; opacity: 0.4;"></i>
+                        <p style="font-size: 1rem; font-weight: 600;">조건에 맞는 사진이 없습니다.</p>
+                        <p style="font-size: 0.85rem; margin-top: 4px;">다른 검색어나 태그를 선택해보세요.</p>
+                    </div>
+                `;
+                document.getElementById('infinite-scroll-trigger').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('infinite-scroll-trigger').style.display = 'block';
+            renderNextBatch();
+        }
+
+        // Render posts batch (Infinite Scroll)
+        function renderNextBatch() {
+            const nextBatch = filteredPosts.slice(renderedCount, renderedCount + PAGE_SIZE);
+            if (nextBatch.length === 0) {
+                document.getElementById('infinite-scroll-trigger').style.display = 'none';
+                return;
+            }
+
+            const feed = document.getElementById('gallery-feed');
+            const fragment = document.createDocumentFragment();
+
+            nextBatch.forEach(post => {
+                const card = createPostCard(post);
+                fragment.appendChild(card);
+            });
+
+            feed.appendChild(fragment);
+            renderedCount += nextBatch.length;
+
+            if (renderedCount >= filteredPosts.length) {
+                document.getElementById('infinite-scroll-trigger').style.display = 'none';
+            }
+        }
+
+        // Create Instagram Feed Card
+        function createPostCard(post) {
+            const card = document.createElement('article');
+            card.className = 'post-card';
+            card.id = post.id;
+
+            const isLiked = likedPostIds.has(post.id);
+            const imageCount = post.images.length;
+            const defaultLikeCount = (post.title.length * 3 + imageCount * 2) % 40 + 12;
+
+            // Generate slides HTML
+            let slidesHtml = '';
+            let dotsHtml = '';
+
+            post.images.forEach((imgUrl, idx) => {
+                const safeUrl = getSafeImageUrl(imgUrl);
+                slidesHtml += `
+                    <div class="carousel-slide" onclick="openLightbox('${safeUrl}', '${post.title.replace(/'/g, "\\'")}', '${imgUrl}')">
+                        <img src="${safeUrl}" 
+                             alt="${post.title} 사진 ${idx + 1}" 
+                             loading="lazy"
+                             onerror="this.onerror=null; this.src='${imgUrl}';">
+                    </div>
+                `;
+                if (imageCount > 1) {
+                    dotsHtml += `<div class="dot ${idx === 0 ? 'active' : ''}"></div>`;
+                }
+            });
+
+            card.innerHTML = `
+                <div class="post-header">
+                    <div class="author-info">
+                        <div class="author-avatar">
+                            <i class="fa-solid fa-church"></i>
+                        </div>
+                        <div class="author-meta">
+                            <span class="author-name">서대구제일교회</span>
+                            <span class="post-category">${post.date ? '📅 ' + post.date : '교회 갤러리'}</span>
+                        </div>
+                    </div>
+                    <button class="action-btn" title="공유하기" onclick="sharePost('${post.title.replace(/'/g, "\\'")}', '${post.id}')">
+                        <i class="fa-regular fa-paper-plane" style="font-size: 1.1rem; color:#64748b;"></i>
+                    </button>
+                </div>
+
+                <div class="carousel-wrapper" data-total="${imageCount}">
+                    ${imageCount > 1 ? `<div class="slide-badge"><span class="current-slide">1</span>/${imageCount}</div>` : ''}
+                    
+                    <div class="carousel-track" onscroll="handleTrackScroll(this)">
+                        ${slidesHtml}
+                    </div>
+
+                    ${imageCount > 1 ? `
+                        <button class="carousel-btn prev" onclick="scrollCarousel(this, -1)" style="display:none;" aria-label="이전 사진">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <button class="carousel-btn next" onclick="scrollCarousel(this, 1)" aria-label="다음 사진">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    ` : ''}
+
+                    <div class="heart-popup"><i class="fa-solid fa-heart"></i></div>
+                </div>
+
+                <div class="post-actions">
+                    <div class="action-left">
+                        <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${post.id}', this)" aria-label="좋아요">
+                            <i class="${isLiked ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
+                        </button>
+                        <button class="action-btn" onclick="focusComment('${post.id}')" aria-label="댓글">
+                            <i class="fa-regular fa-comment"></i>
+                        </button>
+                        <button class="action-btn" onclick="sharePost('${post.title.replace(/'/g, "\\'")}', '${post.id}')" aria-label="공유">
+                            <i class="fa-regular fa-share-from-square"></i>
+                        </button>
+                    </div>
+                    
+                    ${imageCount > 1 ? `<div class="carousel-dots">${dotsHtml}</div>` : ''}
+                </div>
+
+                <div class="post-body">
+                    <div class="like-count">좋아요 <span class="like-num">${isLiked ? defaultLikeCount + 1 : defaultLikeCount}</span>개</div>
+                    <div class="post-caption">
+                        <span class="post-title-text">${post.title}</span>
+                    </div>
+                    <div class="post-tags">
+                        <span>#서대구제일교회</span>
+                        <span>#교회앨범</span>
+                        <span>#은혜와감사</span>
+                    </div>
+                </div>
+            `;
+
+            // Double tap / click to heart animation on carousel wrapper
+            const wrapper = card.querySelector('.carousel-wrapper');
+            let lastTap = 0;
+            wrapper.addEventListener('click', (e) => {
+                const currentTime = new Date().getTime();
+                const tapLength = currentTime - lastTap;
+                if (tapLength < 300 && tapLength > 0) {
+                    // Double tap detected
+                    triggerHeartAnimation(wrapper);
+                    const likeBtn = card.querySelector('.action-btn');
+                    if (!likedPostIds.has(post.id)) {
+                        toggleLike(post.id, likeBtn);
+                    }
+                    e.stopPropagation();
+                }
+                lastTap = currentTime;
+            });
+
+            return card;
+        }
+
+        // Carousel Scroll & Dot Update
+        function handleTrackScroll(track) {
+            const wrapper = track.closest('.carousel-wrapper');
+            const total = parseInt(wrapper.dataset.total, 10);
+            if (total <= 1) return;
+
+            const scrollLeft = track.scrollLeft;
+            const width = track.offsetWidth;
+            const currentIndex = Math.round(scrollLeft / width);
+
+            // Update badge
+            const badgeCurrent = wrapper.querySelector('.current-slide');
+            if (badgeCurrent) badgeCurrent.textContent = currentIndex + 1;
+
+            // Update dots
+            const card = wrapper.closest('.post-card');
+            const dots = card.querySelectorAll('.carousel-dots .dot');
+            dots.forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === currentIndex);
+            });
+
+            // Update button visibility
+            const prevBtn = wrapper.querySelector('.carousel-btn.prev');
+            const nextBtn = wrapper.querySelector('.carousel-btn.next');
+            if (prevBtn) prevBtn.style.display = currentIndex === 0 ? 'none' : 'flex';
+            if (nextBtn) nextBtn.style.display = currentIndex >= total - 1 ? 'none' : 'flex';
+        }
+
+        // Carousel arrow button click
+        function scrollCarousel(btn, direction) {
+            const wrapper = btn.closest('.carousel-wrapper');
+            const track = wrapper.querySelector('.carousel-track');
+            const slideWidth = track.offsetWidth;
+            track.scrollBy({ left: direction * slideWidth, behavior: 'smooth' });
+        }
+
+        // Heart animation popup
+        function triggerHeartAnimation(wrapper) {
+            const heart = wrapper.querySelector('.heart-popup');
+            heart.classList.remove('animate');
+            void heart.offsetWidth; // trigger reflow
+            heart.classList.add('animate');
+            setTimeout(() => heart.classList.remove('animate'), 800);
+        }
+
+        // Toggle Like
+        function toggleLike(postId, btn) {
+            const card = btn.closest('.post-card');
+            const likeNumSpan = card.querySelector('.like-num');
+            let currentLikes = parseInt(likeNumSpan.textContent, 10);
+
+            if (likedPostIds.has(postId)) {
+                likedPostIds.delete(postId);
+                btn.classList.remove('liked');
+                btn.querySelector('i').className = 'fa-regular fa-heart';
+                likeNumSpan.textContent = currentLikes - 1;
+            } else {
+                likedPostIds.add(postId);
+                btn.classList.add('liked');
+                btn.querySelector('i').className = 'fa-solid fa-heart';
+                likeNumSpan.textContent = currentLikes + 1;
+            }
+            localStorage.setItem('church_liked_posts', JSON.stringify(Array.from(likedPostIds)));
+        }
+
+        // Lightbox functions
+        let currentModalOriginalUrl = '';
+        function openLightbox(proxyUrl, title, originalUrl) {
+            const modal = document.getElementById('lightbox-modal');
+            const img = document.getElementById('lightbox-img');
+            const titleEl = document.getElementById('lightbox-title');
+            const originLink = document.getElementById('lightbox-origin-link');
+
+            currentModalOriginalUrl = originalUrl || proxyUrl;
+            img.src = proxyUrl;
+            img.onerror = () => { img.src = originalUrl; };
+            titleEl.textContent = title;
+            originLink.href = originalUrl || proxyUrl;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox(e) {
+            if (e && e.target && e.target.tagName === 'IMG') return;
+            const modal = document.getElementById('lightbox-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function shareCurrentPhoto() {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(currentModalOriginalUrl);
+                showToast('사진 원본 링크가 복사되었습니다!');
+            } else {
+                showToast('링크: ' + currentModalOriginalUrl);
+            }
+        }
+
+        function sharePost(title, postId) {
+            if (navigator.clipboard) {
+                const url = window.location.href.split('#')[0] + '#' + postId;
+                navigator.clipboard.writeText(url);
+                showToast(`'${title}' 링크가 복사되었습니다!`);
+            } else {
+                showToast('링크가 복사되었습니다.');
+            }
+        }
+
+        function focusComment(postId) {
+            showToast('교회 성도님들과 함께 은혜를 나눠보세요 ✨');
+        }
+
+        // Toast Helper
+        let toastTimeout;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // Search Input Handler (Debounced)
+        let searchTimeout;
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                searchQuery = e.target.value.trim();
+                applyFilter();
+            }, 300);
+        });
+
+        // Tag Filter Handler
+        document.getElementById('tags-container').addEventListener('click', (e) => {
+            const chip = e.target.closest('.tag-chip');
+            if (!chip) return;
+
+            document.querySelectorAll('.tag-chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+
+            activeTag = chip.dataset.filter;
+            applyFilter();
+        });
+
+        // Infinite Scroll Observer
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                if (renderedCount < filteredPosts.length) {
+                    renderNextBatch();
+                }
+            }
+        }, { rootMargin: '200px' });
+
+        observer.observe(document.getElementById('infinite-scroll-trigger'));
+
+        // ESC Key to close lightbox
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        // Initial Load
+        fetchPhotos();
     </script>
 </body>
 </html>
