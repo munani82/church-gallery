@@ -19,6 +19,7 @@
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
             --header-bg: rgba(255, 255, 255, 0.92);
+            --dock-bg: rgba(255, 255, 255, 0.95);
             --border-color: #e2e8f0;
             --text-primary: #0f172a;
             --text-secondary: #64748b;
@@ -29,6 +30,7 @@
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
             --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
             --shadow-lg: 0 10px 25px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+            --shadow-dock: 0 -4px 20px rgba(0, 0, 0, 0.08);
         }
 
         * {
@@ -43,7 +45,7 @@
             font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
             color: var(--text-primary);
             line-height: 1.5;
-            padding-bottom: 60px;
+            padding-bottom: 130px; /* 하단 검색 독 여백 확보 */
             word-break: keep-all;
             overflow-wrap: break-word;
             -webkit-font-smoothing: antialiased;
@@ -109,16 +111,6 @@
             word-break: keep-all;
         }
 
-        .logo-text span {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            display: block;
-            margin-top: -2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
         .header-actions {
             display: flex;
             align-items: center;
@@ -149,92 +141,17 @@
             color: var(--accent-color);
         }
 
-        /* ─── Search & Category Bar ─── */
-        .filter-section {
-            max-width: 680px;
-            margin: 16px auto 8px;
-            padding: 0 16px;
-        }
-
-        .search-box {
-            position: relative;
-            margin-bottom: 12px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 10px 14px 10px 38px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            background-color: var(--card-bg);
-            font-size: 0.9rem;
-            font-family: inherit;
-            outline: none;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-sm);
-            word-break: keep-all;
-        }
-
-        .search-box input:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #94a3b8;
-            font-size: 0.9rem;
-        }
-
-        .tags-container {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 6px;
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-        }
-        .tags-container::-webkit-scrollbar {
-            display: none;
-        }
-
-        .tag-chip {
-            white-space: nowrap;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.2s;
-            flex-shrink: 0;
-            word-break: keep-all;
-        }
-
-        .tag-chip.active {
-            background-color: var(--accent-color);
-            color: #ffffff;
-            border-color: var(--accent-color);
-            font-weight: 600;
-            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
-        }
-
         /* ─── Feed Container ─── */
         .feed-container {
             max-width: 680px;
             margin: 0 auto;
-            padding: 12px 16px;
+            padding: 16px 16px 8px;
         }
 
         .feed-stats {
             font-size: 0.82rem;
             color: var(--text-secondary);
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -523,6 +440,110 @@
             word-break: keep-all;
         }
 
+        /* ─── Bottom Floating Search & Filter Dock ─── */
+        .bottom-dock {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--dock-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid var(--border-color);
+            padding: 10px 16px 14px;
+            z-index: 900;
+            box-shadow: var(--shadow-dock);
+        }
+
+        .dock-content {
+            max-width: 680px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 9px 36px 9px 38px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            font-size: 0.88rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+            word-break: keep-all;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .search-clear-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .tags-container {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .tags-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tag-chip {
+            white-space: nowrap;
+            padding: 5px 12px;
+            border-radius: 16px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            word-break: keep-all;
+        }
+
+        .tag-chip.active {
+            background-color: var(--accent-color);
+            color: #ffffff;
+            border-color: var(--accent-color);
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+        }
+
         /* ─── Lightbox Modal ─── */
         .lightbox-modal {
             display: none;
@@ -559,7 +580,7 @@
 
         .lightbox-img-wrapper {
             max-width: 92vw;
-            max-height: 80vh;
+            max-height: 78vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -567,7 +588,7 @@
 
         .lightbox-img-wrapper img {
             max-width: 100%;
-            max-height: 80vh;
+            max-height: 78vh;
             object-fit: contain;
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -656,7 +677,7 @@
         /* ─── Toast Alert ─── */
         .toast {
             position: fixed;
-            bottom: 24px;
+            bottom: 110px; /* 독 위로 알림 팝업 */
             left: 50%;
             transform: translateX(-50%) translateY(100px);
             background-color: rgba(15, 23, 42, 0.9);
@@ -697,18 +718,14 @@
                 font-size: 0.92rem;
             }
 
-            .logo-text span {
-                font-size: 0.7rem;
-            }
-
             .refresh-btn, .origin-btn {
                 padding: 5px 8px;
                 font-size: 0.75rem;
                 gap: 4px;
             }
 
-            .feed-container, .filter-section {
-                padding: 8px 12px;
+            .feed-container {
+                padding: 12px 12px 6px;
             }
 
             .post-card {
@@ -745,7 +762,7 @@
             }
 
             .carousel-btn {
-                display: none; /* Hide hover buttons on touch devices */
+                display: none;
             }
 
             .post-actions {
@@ -769,9 +786,8 @@
                 font-size: 0.78rem;
             }
 
-            .tag-chip {
-                padding: 5px 12px;
-                font-size: 0.78rem;
+            .bottom-dock {
+                padding: 8px 12px 12px;
             }
         }
     </style>
@@ -799,23 +815,6 @@
             </div>
         </div>
     </header>
-
-    <!-- Search & Filter Section -->
-    <section class="filter-section">
-        <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" id="search-input" placeholder="게시글 제목, 행사명, 날짜 검색..." autocomplete="off">
-        </div>
-        <div class="tags-container" id="tags-container">
-            <button class="tag-chip active" data-filter="all">전체보기</button>
-            <button class="tag-chip" data-filter="청년부">청년부</button>
-            <button class="tag-chip" data-filter="성경학교">성경학교</button>
-            <button class="tag-chip" data-filter="헌신예배">헌신예배</button>
-            <button class="tag-chip" data-filter="유초등부">유초등부</button>
-            <button class="tag-chip" data-filter="수련회">수련회</button>
-            <button class="tag-chip" data-filter="예배">예배</button>
-        </div>
-    </section>
 
     <!-- Feed Container -->
     <main class="feed-container">
@@ -847,6 +846,22 @@
         </div>
     </main>
 
+    <!-- Bottom Floating Search & Filter Dock -->
+    <div class="bottom-dock">
+        <div class="dock-content">
+            <!-- Tag Filter Bar (동적 생성) -->
+            <div class="tags-container" id="tags-container">
+                <button class="tag-chip active" data-filter="all">전체보기</button>
+            </div>
+            <!-- Search Box -->
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="search-input" placeholder="게시글 제목, 행사명, 날짜 검색..." autocomplete="off">
+                <button class="search-clear-btn" id="search-clear" onclick="clearSearch()">&times;</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Lightbox Modal -->
     <div class="lightbox-modal" id="lightbox-modal" onclick="closeLightbox(event)">
         <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
@@ -876,6 +891,13 @@
         let activeTag = 'all';
         let searchQuery = '';
         const likedPostIds = new Set(JSON.parse(localStorage.getItem('church_liked_posts') || '[]'));
+
+        // 교회 주요 행사/부서 키워드 사전 (실제 글에 등장하는 것만 자동 추출)
+        const KEYWORD_CANDIDATES = [
+            '청년부', '유초등부', '유치부', '중고등부', '남전도회', '여전도회',
+            '성경학교', '수련회', '헌신예배', '부흥회', '야유회', '찬양',
+            '세례식', '임직식', '구역', '주일학교', '체육대회', '성탄', '부활절', '새가족'
+        ];
 
         // Image proxy helper
         function getSafeImageUrl(url) {
@@ -915,6 +937,31 @@
             return '';
         }
 
+        // 글 목록에서 실제 존재하는 카테고리 태그를 동적으로 추출하여 단추 생성
+        function generateDynamicTags(posts) {
+            const counts = {};
+            posts.forEach(post => {
+                KEYWORD_CANDIDATES.forEach(keyword => {
+                    if (post.title.includes(keyword)) {
+                        counts[keyword] = (counts[keyword] || 0) + 1;
+                    }
+                });
+            });
+
+            // 빈도수 높은 순 정렬
+            const sortedKeywords = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
+
+            const tagsContainer = document.getElementById('tags-container');
+            let html = `<button class="tag-chip ${activeTag === 'all' ? 'active' : ''}" data-filter="all">전체보기</button>`;
+
+            sortedKeywords.forEach(kw => {
+                const isActive = (activeTag === kw);
+                html += `<button class="tag-chip ${isActive ? 'active' : ''}" data-filter="${kw}">${kw} (${counts[kw]})</button>`;
+            });
+
+            tagsContainer.innerHTML = html;
+        }
+
         // Fetch photos from JSON
         async function fetchPhotos(isRefresh = false) {
             const feed = document.getElementById('gallery-feed');
@@ -928,6 +975,10 @@
                 const rawPhotos = await response.json();
 
                 allPosts = groupPhotosByTitle(rawPhotos);
+                
+                // 데이터 기반으로 태그 단추 동적 생성
+                generateDynamicTags(allPosts);
+                
                 applyFilter();
 
                 const totalPhotosCount = rawPhotos.length;
@@ -969,7 +1020,7 @@
                     <div style="text-align: center; padding: 60px 20px; color: #64748b;">
                         <i class="fa-solid fa-images" style="font-size: 2.5rem; margin-bottom: 14px; opacity: 0.4;"></i>
                         <p style="font-size: 1rem; font-weight: 600;">조건에 맞는 사진이 없습니다.</p>
-                        <p style="font-size: 0.85rem; margin-top: 4px;">다른 검색어나 태그를 선택해보세요.</p>
+                        <p style="font-size: 0.85rem; margin-top: 4px;">다른 검색어나 하단 태그를 선택해보세요.</p>
                     </div>
                 `;
                 document.getElementById('infinite-scroll-trigger').style.display = 'none';
@@ -1104,7 +1155,6 @@
                 const currentTime = new Date().getTime();
                 const tapLength = currentTime - lastTap;
                 if (tapLength < 300 && tapLength > 0) {
-                    // Double tap detected
                     triggerHeartAnimation(wrapper);
                     const likeBtn = card.querySelector('.action-btn');
                     if (!likedPostIds.has(post.id)) {
@@ -1158,7 +1208,7 @@
         function triggerHeartAnimation(wrapper) {
             const heart = wrapper.querySelector('.heart-popup');
             heart.classList.remove('animate');
-            void heart.offsetWidth; // trigger reflow
+            void heart.offsetWidth;
             heart.classList.add('animate');
             setTimeout(() => heart.classList.remove('animate'), 800);
         }
@@ -1245,13 +1295,25 @@
 
         // Search Input Handler (Debounced)
         let searchTimeout;
-        document.getElementById('search-input').addEventListener('input', (e) => {
+        const searchInput = document.getElementById('search-input');
+        const searchClearBtn = document.getElementById('search-clear');
+
+        searchInput.addEventListener('input', (e) => {
             clearTimeout(searchTimeout);
+            const val = e.target.value;
+            searchClearBtn.style.display = val ? 'block' : 'none';
             searchTimeout = setTimeout(() => {
-                searchQuery = e.target.value.trim();
+                searchQuery = val.trim();
                 applyFilter();
             }, 300);
         });
+
+        function clearSearch() {
+            searchInput.value = '';
+            searchClearBtn.style.display = 'none';
+            searchQuery = '';
+            applyFilter();
+        }
 
         // Tag Filter Handler
         document.getElementById('tags-container').addEventListener('click', (e) => {
