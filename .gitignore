@@ -1,0 +1,6 @@
+primary_data/
+secondary_data/
+intermediate_results/
+pdfs/
+__pycache__/
+*.pyc

@@ -7,10 +7,10 @@
     <meta name="referrer" content="no-referrer">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
-    <title>서대구제일교회 사진 갤러리</title>
-    <meta name="description" content="서대구제일교회 최신 활동 및 예배 사진 갤러리">
+    <title>서대구제일교회 갤러리 및 주보</title>
+    <meta name="description" content="서대구제일교회 최신 활동 사진 갤러리 및 주보 서비스">
     
-    <!-- Pretendard Font & FontAwesome Icons CDN -->
+    <!-- Pretendard Font 및 FontAwesome Icons CDN -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     
@@ -18,7 +18,7 @@
         :root {
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
-            --header-bg: rgba(255, 255, 255, 0.92);
+            --header-bg: rgba(255, 255, 255, 0.94);
             --dock-bg: rgba(255, 255, 255, 0.95);
             --border-color: #e2e8f0;
             --text-primary: #0f172a;
@@ -45,13 +45,13 @@
             font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
             color: var(--text-primary);
             line-height: 1.5;
-            padding-bottom: 130px; /* 하단 검색 독 여백 확보 */
+            padding-bottom: 130px;
             word-break: keep-all;
             overflow-wrap: break-word;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ─── Sticky Header ─── */
+        /* Sticky Header */
         header {
             position: sticky;
             top: 0;
@@ -66,7 +66,7 @@
         .header-content {
             max-width: 680px;
             margin: 0 auto;
-            padding: 12px 16px;
+            padding: 12px 16px 8px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -84,17 +84,17 @@
         }
 
         .logo-icon {
-            width: 36px;
-            height: 36px;
-            min-width: 36px;
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
             background: linear-gradient(135deg, #0284c7, #38bdf8);
-            border-radius: 10px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #ffffff;
-            font-size: 1.1rem;
-            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+            font-size: 1.15rem;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.28);
         }
 
         .logo-text {
@@ -141,31 +141,96 @@
             color: var(--accent-color);
         }
 
-        /* ─── Feed Container ─── */
+        /* Category Segmented Navigation Tabs */
+        .category-nav-wrapper {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 4px 16px 10px;
+        }
+
+        .category-segmented-control {
+            display: flex;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 14px;
+            gap: 4px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .cat-tab-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border: none;
+            background: transparent;
+            color: #64748b;
+            font-size: 0.88rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .cat-tab-btn i {
+            font-size: 0.95rem;
+        }
+
+        .cat-tab-btn:hover {
+            color: #0f172a;
+        }
+
+        .cat-tab-btn.active {
+            background: #ffffff;
+            color: #0284c7;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .cat-badge-count {
+            display: inline-block;
+            font-size: 0.72rem;
+            padding: 2px 6px;
+            border-radius: 20px;
+            background: #e2e8f0;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .cat-tab-btn.active .cat-badge-count {
+            background: #e0f2fe;
+            color: #0284c7;
+        }
+
+        /* Feed Container */
         .feed-container {
             max-width: 680px;
             margin: 0 auto;
-            padding: 16px 16px 8px;
+            padding: 12px 16px 8px;
         }
 
         .feed-stats {
-            font-size: 0.82rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.85rem;
             color: var(--text-secondary);
             margin-bottom: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            word-break: keep-all;
+            padding: 0 4px;
+            font-weight: 500;
         }
 
-        /* ─── Instagram Card ─── */
+        /* Post Card */
         .post-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: var(--card-radius);
+            box-shadow: var(--shadow-sm);
             margin-bottom: 24px;
             overflow: hidden;
-            box-shadow: var(--shadow-sm);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
@@ -173,35 +238,38 @@
             box-shadow: var(--shadow-md);
         }
 
-        /* Post Header */
         .post-header {
-            padding: 14px 16px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 8px;
         }
 
         .author-info {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             min-width: 0;
         }
 
         .author-avatar {
-            width: 40px;
-            height: 40px;
-            min-width: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
-            color: #0369a1;
+            background-color: #f1f5f9;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
-            border: 2px solid #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            color: var(--accent-color);
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .author-avatar.bulletin-avatar {
+            background: #fef3c7;
+            color: #d97706;
+            border-color: #fde68a;
         }
 
         .author-meta {
@@ -210,39 +278,65 @@
             min-width: 0;
         }
 
+        .author-name-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
         .author-name {
+            font-size: 0.9rem;
             font-weight: 700;
-            font-size: 0.95rem;
             color: var(--text-primary);
-            word-break: keep-all;
+        }
+
+        .post-badge {
+            font-size: 0.72rem;
+            padding: 2px 7px;
+            border-radius: 6px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .badge-album {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .badge-bulletin {
+            background: #fef3c7;
+            color: #b45309;
         }
 
         .post-category {
             font-size: 0.78rem;
             color: var(--text-secondary);
-            word-break: keep-all;
+            margin-top: 1px;
         }
 
-        /* Post Carousel Wrapper (Dynamic Frame) */
+        /* Carousel Wrapper */
         .carousel-wrapper {
             position: relative;
             width: 100%;
-            background-color: var(--card-bg);
-            user-select: none;
+            background-color: #0b0f19;
             overflow: hidden;
-            transition: height 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: height 0.25s ease-out;
         }
 
         .carousel-track {
             display: flex;
-            align-items: flex-start;
+            width: 100%;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
-            width: 100%;
+            -ms-overflow-style: none;
         }
+
         .carousel-track::-webkit-scrollbar {
             display: none;
         }
@@ -251,38 +345,38 @@
             flex: 0 0 100%;
             width: 100%;
             scroll-snap-align: start;
-            position: relative;
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: center;
-            background: transparent;
             cursor: pointer;
+            position: relative;
         }
 
         .carousel-slide img {
             width: 100%;
             height: auto;
+            max-height: 82vh;
+            object-fit: contain;
             display: block;
-            transition: opacity 0.3s;
+            user-select: none;
+            -webkit-user-drag: none;
         }
 
-        /* Slide Overlay Badge (1/5) */
         .slide-badge {
             position: absolute;
-            top: 14px;
-            right: 14px;
-            background-color: rgba(15, 23, 42, 0.75);
+            top: 12px;
+            right: 12px;
+            background: rgba(15, 23, 42, 0.75);
             backdrop-filter: blur(4px);
             color: #ffffff;
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             font-weight: 600;
             padding: 4px 10px;
-            border-radius: 12px;
+            border-radius: 20px;
             z-index: 10;
-            letter-spacing: 0.5px;
+            pointer-events: none;
         }
 
-        /* Carousel Navigation Buttons */
         .carousel-btn {
             position: absolute;
             top: 50%;
@@ -290,26 +384,21 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(4px);
             border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
             color: #0f172a;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             z-index: 10;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            transition: all 0.2s;
-            opacity: 0;
-        }
-
-        .carousel-wrapper:hover .carousel-btn {
-            opacity: 1;
+            transition: all 0.2s ease;
         }
 
         .carousel-btn:hover {
-            background-color: #ffffff;
+            background: #ffffff;
             transform: translateY(-50%) scale(1.08);
         }
 
@@ -321,13 +410,9 @@
             right: 12px;
         }
 
-        .carousel-btn:disabled {
-            display: none;
-        }
-
-        /* Post Action Bar */
+        /* Post Actions & Dots */
         .post-actions {
-            padding: 12px 16px 6px;
+            padding: 10px 16px 6px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -336,36 +421,37 @@
         .action-left {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
         }
 
         .action-btn {
             background: none;
             border: none;
-            font-size: 1.3rem;
-            color: #475569;
             cursor: pointer;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            transition: transform 0.15s ease, color 0.15s ease;
-        }
-
-        .action-btn:hover {
-            transform: scale(1.12);
-            color: var(--accent-color);
-        }
-
-        .action-btn.saved {
-            color: #0284c7;
-        }
-
-        /* Pagination Dots */
-        .carousel-dots {
+            font-size: 1.15rem;
+            color: var(--text-primary);
+            padding: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: transform 0.15s ease, color 0.15s ease;
+        }
+
+        .action-btn:active {
+            transform: scale(0.88);
+        }
+
+        .action-btn.saved {
+            color: #eab308;
+        }
+
+        .carousel-dots {
+            display: flex;
+            align-items: center;
             gap: 5px;
+            max-width: 140px;
+            overflow: hidden;
+            padding: 4px 0;
         }
 
         .dot {
@@ -373,73 +459,110 @@
             height: 6px;
             border-radius: 50%;
             background-color: #cbd5e1;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
         }
 
         .dot.active {
             background-color: var(--accent-color);
-            width: 16px;
+            width: 18px;
             border-radius: 4px;
         }
 
-        /* Post Body & Caption */
+        /* Post Body */
         .post-body {
-            padding: 8px 16px 16px;
+            padding: 4px 16px 14px;
         }
 
         .post-caption {
-            font-size: 0.95rem;
+            font-size: 0.93rem;
             color: var(--text-primary);
-            line-height: 1.55;
-            word-break: keep-all;
-            overflow-wrap: break-word;
+            line-height: 1.45;
+            font-weight: 500;
         }
 
-        .post-caption .post-title-text {
+        .post-title-text {
             font-weight: 600;
-            letter-spacing: -0.2px;
-            word-break: keep-all;
         }
 
         .post-tags {
-            margin-top: 6px;
+            margin-top: 8px;
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            word-break: keep-all;
+            gap: 6px;
         }
 
         .tag-link {
-            font-size: 0.84rem;
+            font-size: 0.8rem;
             color: var(--accent-color);
             font-weight: 600;
             cursor: pointer;
-            transition: opacity 0.2s, transform 0.15s;
-            user-select: none;
+            background: #f0f9ff;
+            padding: 2px 8px;
+            border-radius: 6px;
+            transition: background-color 0.15s ease;
         }
 
         .tag-link:hover {
-            opacity: 0.75;
-            text-decoration: underline;
+            background-color: #e0f2fe;
         }
 
-        .tag-link:active {
-            transform: scale(0.95);
+        /* Skeleton Loading */
+        .skeleton-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--card-radius);
+            margin-bottom: 24px;
+            overflow: hidden;
         }
 
-        /* ─── Bottom Floating Search & Filter Dock ─── */
+        .skeleton-header {
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .skeleton-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            animation: pulse 1.5s infinite;
+        }
+
+        .skeleton-title {
+            width: 160px;
+            height: 14px;
+            border-radius: 4px;
+            background: #e2e8f0;
+            animation: pulse 1.5s infinite;
+        }
+
+        .skeleton-media {
+            width: 100%;
+            height: 320px;
+            background: #f1f5f9;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.45; }
+        }
+
+        /* Bottom Floating Search & Filter Dock */
         .bottom-dock {
             position: fixed;
             bottom: 0;
             left: 0;
-            width: 100%;
-            background-color: var(--dock-bg);
+            right: 0;
+            background: var(--dock-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-top: 1px solid var(--border-color);
-            padding: 10px 16px 14px;
-            z-index: 900;
             box-shadow: var(--shadow-dock);
+            padding: 10px 16px 20px;
+            z-index: 90;
         }
 
         .dock-content {
@@ -447,7 +570,48 @@
             margin: 0 auto;
             display: flex;
             flex-direction: column;
+            gap: 10px;
+        }
+
+        .tags-container {
+            display: flex;
+            align-items: center;
             gap: 8px;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 2px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .tags-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tag-chip {
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .tag-chip:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .tag-chip.active {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.35);
         }
 
         .search-box {
@@ -455,32 +619,33 @@
             width: 100%;
         }
 
-        .search-box input {
-            width: 100%;
-            padding: 9px 36px 9px 38px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            background-color: var(--card-bg);
-            font-size: 0.88rem;
-            font-family: inherit;
-            outline: none;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-sm);
-            word-break: keep-all;
-        }
-
-        .search-box input:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
-        }
-
         .search-icon {
             position: absolute;
             left: 14px;
             top: 50%;
             transform: translateY(-50%);
-            color: #94a3b8;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            pointer-events: none;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 38px 10px 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background-color: #f8fafc;
             font-size: 0.9rem;
+            font-family: inherit;
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-box input:focus {
+            background-color: #ffffff;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
         }
 
         .search-clear-btn {
@@ -490,309 +655,158 @@
             transform: translateY(-50%);
             background: none;
             border: none;
-            color: #94a3b8;
-            cursor: pointer;
-            font-size: 0.9rem;
-            display: none;
-        }
-
-        .tags-container {
-            display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            padding-bottom: 2px;
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-        }
-        .tags-container::-webkit-scrollbar {
-            display: none;
-        }
-
-        .tag-chip {
-            white-space: nowrap;
-            padding: 5px 12px;
-            border-radius: 16px;
-            font-size: 0.78rem;
-            font-weight: 500;
-            background: #ffffff;
-            border: 1px solid var(--border-color);
             color: var(--text-secondary);
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.2s;
-            flex-shrink: 0;
-            word-break: keep-all;
-        }
-
-        .tag-chip.active {
-            background-color: var(--accent-color);
-            color: #ffffff;
-            border-color: var(--accent-color);
-            font-weight: 600;
-            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
-        }
-
-        /* ─── Lightbox Modal ─── */
-        .lightbox-modal {
             display: none;
+            padding: 4px;
+        }
+
+        /* Lightbox Modal */
+        .lightbox-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: rgba(0, 0, 0, 0.95);
-            z-index: 9999;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
-            opacity: 0;
-            transition: opacity 0.25s ease;
+            user-select: none;
+            touch-action: none;
         }
 
-        .lightbox-modal.active {
+        .lightbox-modal.show {
             display: flex;
-            opacity: 1;
         }
 
         .lightbox-close {
             position: absolute;
             top: 20px;
             right: 20px;
-            color: #fff;
-            font-size: 1.8rem;
-            background: none;
+            background: rgba(255, 255, 255, 0.2);
             border: none;
+            color: #ffffff;
+            font-size: 1.5rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
             cursor: pointer;
-            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1010;
+            transition: background 0.2s ease;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.35);
         }
 
         .lightbox-img-wrapper {
-            max-width: 92vw;
-            max-height: 75vh;
+            position: relative;
+            max-width: 95vw;
+            max-height: 80vh;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: visible;
-            touch-action: none;
-            user-select: none;
         }
 
         .lightbox-img-wrapper img {
-            max-width: 100%;
-            max-height: 75vh;
+            max-width: 95vw;
+            max-height: 80vh;
             object-fit: contain;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 6px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
             transform-origin: center center;
-            will-change: transform;
+            transition: transform 0.08s ease-out;
             cursor: grab;
-            transition: transform 0.05s linear;
-        }
-
-        .lightbox-img-wrapper img.animated {
-            transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
         .lightbox-zoom-hint {
-            color: #94a3b8;
-            font-size: 0.75rem;
-            margin-top: 6px;
+            position: absolute;
+            bottom: 74px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            pointer-events: none;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 4px 12px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
-            gap: 4px;
-            user-select: none;
+            gap: 6px;
         }
 
         .lightbox-title {
-            color: #e2e8f0;
-            margin-top: 8px;
-            font-size: 0.92rem;
-            line-height: 1.5;
-            text-align: center;
-            max-width: 86vw;
-            word-break: keep-all;
-            overflow-wrap: break-word;
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            max-width: 70vw;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .lightbox-actions {
-            margin-top: 10px;
+            position: absolute;
+            bottom: 24px;
             display: flex;
+            align-items: center;
             gap: 12px;
         }
 
         .lightbox-btn {
-            background-color: rgba(255, 255, 255, 0.15);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 8px 18px;
             border-radius: 20px;
-            font-size: 0.8rem;
-            text-decoration: none;
-            display: inline-flex;
+            cursor: pointer;
+            display: flex;
             align-items: center;
             gap: 6px;
-            transition: background-color 0.2s;
-            word-break: keep-all;
+            text-decoration: none;
+            transition: all 0.2s ease;
         }
 
         .lightbox-btn:hover {
-            background-color: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #ffffff;
         }
 
-        /* ─── Skeleton Loading ─── */
-        .skeleton-card {
-            background-color: #fff;
-            border-radius: var(--card-radius);
-            border: 1px solid var(--border-color);
-            margin-bottom: 24px;
-            padding: 16px;
-            animation: pulse 1.5s infinite ease-in-out;
-        }
-
-        .skeleton-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 14px;
-        }
-
-        .skeleton-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #e2e8f0;
-        }
-
-        .skeleton-title {
-            width: 50%;
-            height: 16px;
-            background-color: #e2e8f0;
-            border-radius: 4px;
-        }
-
-        .skeleton-media {
-            width: 100%;
-            height: 320px;
-            background-color: #e2e8f0;
-            border-radius: 12px;
-            margin-bottom: 12px;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        /* ─── Toast Alert ─── */
+        /* Toast Message */
         .toast {
             position: fixed;
-            bottom: 110px; /* 독 위로 알림 팝업 */
+            top: 70px;
             left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background-color: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(8px);
+            transform: translateX(-50%) translateY(-20px);
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(6px);
             color: #ffffff;
+            font-size: 0.88rem;
+            font-weight: 600;
             padding: 10px 20px;
             border-radius: 24px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            z-index: 10000;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
             opacity: 0;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: var(--shadow-lg);
-            word-break: keep-all;
-            white-space: nowrap;
+            pointer-events: none;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .toast.show {
-            transform: translateX(-50%) translateY(0);
             opacity: 1;
-        }
-
-        /* ─── Mobile Viewport Optimization (max-width: 640px) ─── */
-        @media (max-width: 640px) {
-            .header-content {
-                padding: 10px 12px;
-            }
-
-            .logo-icon {
-                width: 32px;
-                height: 32px;
-                min-width: 32px;
-                font-size: 0.95rem;
-                border-radius: 8px;
-            }
-
-            .logo-text h1 {
-                font-size: 0.92rem;
-            }
-
-            .refresh-btn, .origin-btn {
-                padding: 5px 8px;
-                font-size: 0.75rem;
-                gap: 4px;
-            }
-
-            .feed-container {
-                padding: 12px 12px 6px;
-            }
-
-            .post-card {
-                border-radius: 14px;
-                margin-bottom: 18px;
-            }
-
-            .post-header {
-                padding: 12px 14px;
-            }
-
-            .author-avatar {
-                width: 36px;
-                height: 36px;
-                min-width: 36px;
-                font-size: 0.95rem;
-            }
-
-            .author-name {
-                font-size: 0.9rem;
-            }
-
-            .post-category {
-                font-size: 0.75rem;
-            }
-
-            .carousel-slide {
-                min-height: auto;
-                max-height: none;
-            }
-
-            .carousel-slide img {
-                max-height: none;
-            }
-
-            .carousel-btn {
-                display: none;
-            }
-
-            .post-actions {
-                padding: 10px 14px 4px;
-            }
-
-            .action-btn {
-                font-size: 1.25rem;
-            }
-
-            .post-body {
-                padding: 6px 14px 14px;
-            }
-
-            .post-caption {
-                font-size: 0.9rem;
-                line-height: 1.5;
-            }
-
-            .bottom-dock {
-                padding: 8px 12px 12px;
-            }
+            transform: translateX(-50%) translateY(0);
         }
     </style>
 </head>
@@ -806,18 +820,39 @@
                     <i class="fa-solid fa-church"></i>
                 </div>
                 <div class="logo-text">
-                    <h1>서대구제일교회 갤러리</h1>
+                    <h1>서대구제일교회</h1>
                 </div>
             </a>
             <div class="header-actions">
                 <button class="refresh-btn" onclick="fetchPhotos(true)">
                     <i class="fa-solid fa-rotate-right"></i> 새로고침
                 </button>
-                <a href="http://www.seodaegu.net/main/sub.html?pageCode=25" target="_blank" rel="noopener noreferrer" class="origin-btn">
+                <a id="origin-board-link" href="http://www.seodaegu.net/main/sub.html?pageCode=25" target="_blank" rel="noopener noreferrer" class="origin-btn">
                     <i class="fa-solid fa-arrow-up-right-from-square"></i> 원본게시판
                 </a>
             </div>
         </div>
+
+        <!-- 분리된 카테고리 탭 (전체, 교회앨범, 주보) -->
+        <nav class="category-nav-wrapper">
+            <div class="category-segmented-control">
+                <button class="cat-tab-btn active" data-category="all" onclick="selectCategory('all')">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span>전체보기</span>
+                    <span class="cat-badge-count" id="count-all">0</span>
+                </button>
+                <button class="cat-tab-btn" data-category="album" onclick="selectCategory('album')">
+                    <i class="fa-solid fa-camera"></i>
+                    <span>교회앨범</span>
+                    <span class="cat-badge-count" id="count-album">0</span>
+                </button>
+                <button class="cat-tab-btn" data-category="bulletin" onclick="selectCategory('bulletin')">
+                    <i class="fa-solid fa-book-bible"></i>
+                    <span>주보</span>
+                    <span class="cat-badge-count" id="count-bulletin">0</span>
+                </button>
+            </div>
+        </nav>
     </header>
 
     <!-- Feed Container -->
@@ -828,7 +863,6 @@
         </div>
         
         <div id="gallery-feed">
-            <!-- Skeleton cards while loading -->
             <div class="skeleton-card">
                 <div class="skeleton-header">
                     <div class="skeleton-avatar"></div>
@@ -855,7 +889,7 @@
         <div class="dock-content">
             <!-- Tag Filter Bar (동적 생성) -->
             <div class="tags-container" id="tags-container">
-                <button class="tag-chip active" data-filter="all">전체보기</button>
+                <button class="tag-chip active" data-filter="all">전체</button>
             </div>
             <!-- Search Box -->
             <div class="search-box">
@@ -873,7 +907,7 @@
             <img id="lightbox-img" src="" alt="확대 사진">
         </div>
         <div class="lightbox-zoom-hint">
-            <i class="fa-solid fa-up-right-and-down-left-from-center"></i> 두 손가락으로 확대하거나 두 번 탭하세요
+            <i class="fa-solid fa-up-right-and-down-left-from-center"></i> 두 손가락으로 확대하거나 마우스 휠로 줌하세요
         </div>
         <div class="lightbox-title" id="lightbox-title"></div>
         <div class="lightbox-actions">
@@ -890,43 +924,46 @@
     <div id="toast" class="toast">알림 메시지</div>
 
     <script>
-        // State
+        // 전역 상태
         let allPosts = [];
         let filteredPosts = [];
         let renderedCount = 0;
         const PAGE_SIZE = 8;
+        let activeCategory = 'all'; // 'all', 'album', 'bulletin'
         let activeTag = 'all';
         let searchQuery = '';
         const userSavedIds = new Set(JSON.parse(localStorage.getItem('church_saved_posts') || '[]'));
 
-        // 교회 주요 행사/부서 키워드 사전 (실제 글에 등장하는 것만 자동 추출)
+        // 주요 행사 및 부서 키워드 사전
         const KEYWORD_CANDIDATES = [
             '청년부', '유초등부', '유치부', '중고등부', '남전도회', '여전도회',
             '성경학교', '수련회', '헌신예배', '부흥회', '야유회', '찬양',
             '세례식', '임직식', '구역', '주일학교', '체육대회', '성탄', '부활절', '새가족'
         ];
 
-        // Image proxy helper
+        // 이미지 프록시 헬퍼 (HTTPS 혼합 컨텐츠 방지 및 빠른 로딩)
         function getSafeImageUrl(url) {
             if (!url) return '';
             const cleanUrl = url.replace(/^https?:\/\//i, '');
             return `https://images.weserv.nl/?url=${encodeURIComponent(cleanUrl)}`;
         }
 
-        // Group flat photos into posts by title
+        // 평탄화된 사진 목록을 게시물 단위로 그룹화
         function groupPhotosByTitle(flatPhotos) {
             const posts = [];
             let currentPost = null;
 
             flatPhotos.forEach((item, index) => {
                 const title = (item.title || '서대구제일교회 사진').trim();
+                const itemCategory = item.category || (item.img && item.img.includes('www24') ? 'bulletin' : 'album');
                 
-                if (currentPost && currentPost.title === title) {
+                if (currentPost && currentPost.title === title && currentPost.category === itemCategory) {
                     currentPost.images.push(item.img);
                 } else {
                     currentPost = {
-                        id: 'post-' + index + '-' + Math.random().toString(36).substr(2, 5),
+                        id: 'post_' + index + '_' + Math.random().toString(36).substr(2, 5),
                         title: title,
+                        category: itemCategory,
                         images: [item.img],
                         date: extractDate(title)
                     };
@@ -937,14 +974,16 @@
             return posts;
         }
 
-        // Extract date string from title if present
+        // 제목에서 날짜 추출
         function extractDate(title) {
             const match = title.match(/\((\d{1,2}\.\d{1,2}\.?\d{0,2}[^)]*)\)/);
             if (match) return match[1];
+            const korMatch = title.match(/(\d{2}년\s*\d{1,2}월\s*\d{1,2}일)/);
+            if (korMatch) return korMatch[1];
             return '';
         }
 
-        // 제목에서 포함된 키워드 태그 목록 자동 추출
+        // 제목에서 키워드 태그 추출
         function extractTagsFromTitle(title) {
             const matched = [];
             KEYWORD_CANDIDATES.forEach(keyword => {
@@ -955,7 +994,38 @@
             return matched;
         }
 
-        // 게시글 내 태그 클릭 시 즉시 해당 태그로 필터링
+        // 카테고리 탭 선택 핸들러
+        function selectCategory(category) {
+            activeCategory = category;
+            activeTag = 'all';
+
+            // 탭 활성 상태 변경
+            document.querySelectorAll('.cat-tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.category === category);
+            });
+
+            // 원본 게시판 링크 동적 전환
+            const originLink = document.getElementById('origin-board-link');
+            if (originLink) {
+                if (category === 'bulletin') {
+                    originLink.href = 'http://www.seodaegu.net/main/sub.html?pageCode=24';
+                    originLink.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> 원본주보';
+                } else {
+                    originLink.href = 'http://www.seodaegu.net/main/sub.html?pageCode=25';
+                    originLink.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> 원본게시판';
+                }
+            }
+
+            // 하단 태그 동적 재배치 및 필터 적용
+            generateDynamicTags();
+            applyFilter();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            const catNames = { all: '전체', album: '교회앨범', bulletin: '주보' };
+            showToast(`${catNames[category] || '카테고리'} 목록으로 전환되었습니다.`);
+        }
+
+        // 게시글 내 태그 클릭 시 필터링
         function clickPostTag(tag) {
             activeTag = tag;
             const chips = document.querySelectorAll('.tag-chip');
@@ -967,10 +1037,14 @@
             showToast(`'#${tag}' 게시글로 필터링되었습니다.`);
         }
 
-        // 글 목록에서 실제 존재하는 카테고리 태그를 동적으로 추출하여 단추 생성
-        function generateDynamicTags(posts) {
+        // 현재 카테고리에 맞는 동적 태그 생성
+        function generateDynamicTags() {
+            const currentCatPosts = (activeCategory === 'all') 
+                ? allPosts 
+                : allPosts.filter(p => p.category === activeCategory);
+
             const counts = {};
-            posts.forEach(post => {
+            currentCatPosts.forEach(post => {
                 KEYWORD_CANDIDATES.forEach(keyword => {
                     if (post.title.includes(keyword)) {
                         counts[keyword] = (counts[keyword] || 0) + 1;
@@ -978,11 +1052,9 @@
                 });
             });
 
-            // 빈도수 높은 순 정렬
             const sortedKeywords = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
-
             const tagsContainer = document.getElementById('tags-container');
-            let html = `<button class="tag-chip ${activeTag === 'all' ? 'active' : ''}" data-filter="all">전체보기</button>`;
+            let html = `<button class="tag-chip ${activeTag === 'all' ? 'active' : ''}" data-filter="all">전체</button>`;
 
             sortedKeywords.forEach(kw => {
                 const isActive = (activeTag === kw);
@@ -992,11 +1064,26 @@
             tagsContainer.innerHTML = html;
         }
 
-        // Fetch photos from JSON
+        // 카테고리별 뱃지 카운트 갱신
+        function updateCategoryCounts() {
+            const countAll = allPosts.length;
+            const countAlbum = allPosts.filter(p => p.category === 'album').length;
+            const countBulletin = allPosts.filter(p => p.category === 'bulletin').length;
+
+            const elAll = document.getElementById('count-all');
+            const elAlbum = document.getElementById('count-album');
+            const elBulletin = document.getElementById('count-bulletin');
+
+            if (elAll) elAll.textContent = countAll;
+            if (elAlbum) elAlbum.textContent = countAlbum;
+            if (elBulletin) elBulletin.textContent = countBulletin;
+        }
+
+        // 데이터 불러오기
         async function fetchPhotos(isRefresh = false) {
             const feed = document.getElementById('gallery-feed');
             if (isRefresh) {
-                showToast('최신 사진을 동기화하고 있습니다...');
+                showToast('최신 데이터를 동기화하고 있습니다...');
             }
 
             try {
@@ -1006,16 +1093,15 @@
 
                 allPosts = groupPhotosByTitle(rawPhotos);
                 
-                // 데이터 기반으로 태그 단추 동적 생성
-                generateDynamicTags(allPosts);
-                
+                updateCategoryCounts();
+                generateDynamicTags();
                 applyFilter();
 
                 const totalPhotosCount = rawPhotos.length;
                 document.getElementById('photos-total-count').textContent = `총 ${totalPhotosCount.toLocaleString()}장의 사진`;
                 
                 if (isRefresh) {
-                    showToast('최신 사진 목록을 불러왔습니다!');
+                    showToast('최신 사진 및 주보 목록을 불러왔습니다!');
                 }
             } catch (err) {
                 console.error(err);
@@ -1031,26 +1117,28 @@
             }
         }
 
-        // Filter and Search logic
+        // 필터 및 검색 적용 로직
         function applyFilter() {
             filteredPosts = allPosts.filter(post => {
+                const matchesCategory = (activeCategory === 'all') || (post.category === activeCategory);
                 const matchesTag = (activeTag === 'all') || post.title.includes(activeTag);
                 const matchesSearch = !searchQuery || post.title.toLowerCase().includes(searchQuery.toLowerCase());
-                return matchesTag && matchesSearch;
+                return matchesCategory && matchesTag && matchesSearch;
             });
 
             renderedCount = 0;
             const feed = document.getElementById('gallery-feed');
             feed.innerHTML = '';
 
-            document.getElementById('posts-count').textContent = `게시물 ${filteredPosts.length}개`;
+            const catNames = { all: '', album: '앨범 ', bulletin: '주보 ' };
+            document.getElementById('posts-count').textContent = `${catNames[activeCategory] || ''}게시물 ${filteredPosts.length}개`;
 
             if (filteredPosts.length === 0) {
                 feed.innerHTML = `
                     <div style="text-align: center; padding: 60px 20px; color: #64748b;">
-                        <i class="fa-solid fa-images" style="font-size: 2.5rem; margin-bottom: 14px; opacity: 0.4;"></i>
-                        <p style="font-size: 1rem; font-weight: 600;">조건에 맞는 사진이 없습니다.</p>
-                        <p style="font-size: 0.85rem; margin-top: 4px;">다른 검색어나 하단 태그를 선택해보세요.</p>
+                        <i class="fa-solid fa-folder-open" style="font-size: 2.5rem; margin-bottom: 14px; opacity: 0.4;"></i>
+                        <p style="font-size: 1rem; font-weight: 600;">해당 조건에 맞는 게시글이 없습니다.</p>
+                        <p style="font-size: 0.85rem; margin-top: 4px;">다른 카테고리나 하단 태그를 선택해보세요.</p>
                     </div>
                 `;
                 document.getElementById('infinite-scroll-trigger').style.display = 'none';
@@ -1061,7 +1149,7 @@
             renderNextBatch();
         }
 
-        // Render posts batch (Infinite Scroll)
+        // 인피니트 스크롤 배치 렌더링
         function renderNextBatch() {
             const nextBatch = filteredPosts.slice(renderedCount, renderedCount + PAGE_SIZE);
             if (nextBatch.length === 0) {
@@ -1085,7 +1173,7 @@
             }
         }
 
-        // Create Instagram Feed Card
+        // 인스타그램 피드 형태 카드 생성
         function createPostCard(post) {
             const card = document.createElement('article');
             card.className = 'post-card';
@@ -1093,8 +1181,9 @@
 
             const isSaved = userSavedIds.has(post.id);
             const imageCount = post.images.length;
+            const isBulletin = post.category === 'bulletin';
 
-            // Extract matching tags from title
+            // 태그 추출
             const matchedTags = extractTagsFromTitle(post.title);
             let tagsHtml = '';
             if (matchedTags.length > 0) {
@@ -1103,7 +1192,7 @@
                     `</div>`;
             }
 
-            // Generate slides HTML
+            // 슬라이드 HTML 생성
             let slidesHtml = '';
             let dotsHtml = '';
 
@@ -1123,15 +1212,25 @@
                 }
             });
 
+            const badgeHtml = isBulletin
+                ? `<span class="post-badge badge-bulletin"><i class="fa-solid fa-book-bible"></i> 주보</span>`
+                : `<span class="post-badge badge-album"><i class="fa-solid fa-camera"></i> 앨범</span>`;
+
+            const avatarClass = isBulletin ? 'author-avatar bulletin-avatar' : 'author-avatar';
+            const avatarIcon = isBulletin ? 'fa-solid fa-book-open' : 'fa-solid fa-church';
+
             card.innerHTML = `
                 <div class="post-header">
                     <div class="author-info">
-                        <div class="author-avatar">
-                            <i class="fa-solid fa-church"></i>
+                        <div class="${avatarClass}">
+                            <i class="${avatarIcon}"></i>
                         </div>
                         <div class="author-meta">
-                            <span class="author-name">서대구제일교회</span>
-                            <span class="post-category">${post.date ? '📅 ' + post.date : '교회 갤러리'} · 사진 ${imageCount}장</span>
+                            <div class="author-name-row">
+                                <span class="author-name">서대구제일교회</span>
+                                ${badgeHtml}
+                            </div>
+                            <span class="post-category">${post.date ? '📅 ' + post.date : (isBulletin ? '주일 주보' : '교회 갤러리')} · 사진 ${imageCount}장</span>
                         </div>
                     </div>
                     <button class="action-btn" title="공유하기" onclick="sharePost('${post.title.replace(/'/g, "\\'")}', '${post.id}')">
@@ -1180,7 +1279,7 @@
             return card;
         }
 
-        // Slide Image Load Callback for adaptive height
+        // 슬라이드 높이 자동 보정
         function onSlideImgLoad(img, slideIndex) {
             const wrapper = img.closest('.carousel-wrapper');
             if (!wrapper) return;
@@ -1193,44 +1292,41 @@
             }
         }
 
-        // Carousel Scroll & Dot Update + Dynamic Height Adjustment
+        // 캐러셀 스크롤 및 인디케이터 업데이트
         function handleTrackScroll(track) {
             const wrapper = track.closest('.carousel-wrapper');
             const total = parseInt(wrapper.dataset.total, 10);
             if (total <= 1) return;
 
             const scrollLeft = track.scrollLeft;
-            const width = track.offsetWidth;
-            const currentIndex = Math.round(scrollLeft / width);
+            const slideWidth = track.offsetWidth;
+            const currentIndex = Math.round(scrollLeft / slideWidth);
 
-            // Update badge
             const badgeCurrent = wrapper.querySelector('.current-slide');
-            if (badgeCurrent) badgeCurrent.textContent = currentIndex + 1;
-
-            // Adapt wrapper height to the current slide image
-            const slides = track.querySelectorAll('.carousel-slide');
-            if (slides[currentIndex]) {
-                const img = slides[currentIndex].querySelector('img');
-                if (img && img.offsetHeight > 0) {
-                    wrapper.style.height = img.offsetHeight + 'px';
-                }
+            if (badgeCurrent) {
+                badgeCurrent.textContent = currentIndex + 1;
             }
 
-            // Update dots
-            const card = wrapper.closest('.post-card');
-            const dots = card.querySelectorAll('.carousel-dots .dot');
-            dots.forEach((dot, idx) => {
-                dot.classList.toggle('active', idx === currentIndex);
-            });
+            const postCard = wrapper.closest('.post-card');
+            if (postCard) {
+                const dots = postCard.querySelectorAll('.carousel-dots .dot');
+                dots.forEach((dot, idx) => {
+                    dot.classList.toggle('active', idx === currentIndex);
+                });
+            }
 
-            // Update button visibility
             const prevBtn = wrapper.querySelector('.carousel-btn.prev');
             const nextBtn = wrapper.querySelector('.carousel-btn.next');
             if (prevBtn) prevBtn.style.display = currentIndex === 0 ? 'none' : 'flex';
             if (nextBtn) nextBtn.style.display = currentIndex >= total - 1 ? 'none' : 'flex';
+
+            const activeImg = track.children[currentIndex]?.querySelector('img');
+            if (activeImg && activeImg.offsetHeight > 0) {
+                wrapper.style.height = activeImg.offsetHeight + 'px';
+            }
         }
 
-        // Carousel arrow button click
+        // 캐러셀 좌우 버튼 이동
         function scrollCarousel(btn, direction) {
             const wrapper = btn.closest('.carousel-wrapper');
             const track = wrapper.querySelector('.carousel-track');
@@ -1238,163 +1334,162 @@
             track.scrollBy({ left: direction * slideWidth, behavior: 'smooth' });
         }
 
-        // Toggle Save (Bookmark)
+        // 저장(북마크) 토글
         function toggleSave(postId, btn) {
+            const icon = btn.querySelector('i');
             if (userSavedIds.has(postId)) {
                 userSavedIds.delete(postId);
                 btn.classList.remove('saved');
-                btn.querySelector('i').className = 'fa-regular fa-bookmark';
-                showToast('보관함 저장이 취소되었습니다.');
+                icon.className = 'fa-regular fa-bookmark';
+                showToast('보관함에서 제거되었습니다.');
             } else {
                 userSavedIds.add(postId);
                 btn.classList.add('saved');
-                btn.querySelector('i').className = 'fa-solid fa-bookmark';
-                showToast('사진이 내 보관함에 저장되었습니다 📌');
+                icon.className = 'fa-solid fa-bookmark';
+                showToast('보관함에 저장되었습니다.');
             }
             localStorage.setItem('church_saved_posts', JSON.stringify(Array.from(userSavedIds)));
         }
 
-        // Lightbox & Pinch-to-zoom / Pan system
-        let currentModalOriginalUrl = '';
+        // 라이트박스 상태 및 줌 기능
+        let currentPhotoUrl = '';
         let zoomScale = 1;
         let zoomTransX = 0;
         let zoomTransY = 0;
         let isDragging = false;
         let startDragX = 0;
         let startDragY = 0;
-        let initialPinchDistance = 0;
-        let initialPinchScale = 1;
-        let lastTapTime = 0;
 
-        function applyZoomTransform(animate = false) {
-            const img = document.getElementById('lightbox-img');
-            if (!img) return;
-            if (animate) {
-                img.classList.add('animated');
-                setTimeout(() => img.classList.remove('animated'), 260);
-            } else {
-                img.classList.remove('animated');
-            }
-            img.style.transform = `translate3d(${zoomTransX}px, ${zoomTransY}px, 0) scale(${zoomScale})`;
-            img.style.cursor = zoomScale > 1 ? 'grab' : 'default';
-        }
-
-        function resetZoom(animate = false) {
-            zoomScale = 1;
-            zoomTransX = 0;
-            zoomTransY = 0;
-            applyZoomTransform(animate);
-        }
-
-        function openLightbox(proxyUrl, title, originalUrl) {
+        function openLightbox(safeUrl, title, rawUrl) {
             const modal = document.getElementById('lightbox-modal');
             const img = document.getElementById('lightbox-img');
             const titleEl = document.getElementById('lightbox-title');
             const originLink = document.getElementById('lightbox-origin-link');
 
-            resetZoom();
-            currentModalOriginalUrl = originalUrl || proxyUrl;
-            img.src = proxyUrl;
-            img.onerror = () => { img.src = originalUrl; };
+            currentPhotoUrl = rawUrl || safeUrl;
+            img.src = safeUrl;
             titleEl.textContent = title;
-            originLink.href = originalUrl || proxyUrl;
+            originLink.href = rawUrl || safeUrl;
 
-            modal.classList.add('active');
+            resetZoom(true);
+            modal.classList.add('show');
             document.body.style.overflow = 'hidden';
         }
 
         function closeLightbox(e) {
-            if (e && e.target && (e.target.id === 'lightbox-img' || e.target.closest('.lightbox-actions') || e.target.closest('.lightbox-title') || e.target.closest('.lightbox-zoom-hint'))) {
+            if (e && e.target && e.target.closest('#lightbox-wrapper, .lightbox-actions, .lightbox-zoom-hint')) {
                 return;
             }
             const modal = document.getElementById('lightbox-modal');
-            modal.classList.remove('active');
+            modal.classList.remove('show');
             document.body.style.overflow = '';
-            resetZoom();
+            resetZoom(true);
+        }
+
+        function resetZoom(animated = false) {
+            const img = document.getElementById('lightbox-img');
+            zoomScale = 1;
+            zoomTransX = 0;
+            zoomTransY = 0;
+            if (img) {
+                img.style.transition = animated ? 'transform 0.2s ease' : 'none';
+                img.style.transform = `translate(0px, 0px) scale(1)`;
+                img.style.cursor = 'grab';
+            }
+        }
+
+        function applyZoomTransform(animated = false) {
+            const img = document.getElementById('lightbox-img');
+            if (!img) return;
+            img.style.transition = animated ? 'transform 0.15s ease' : 'none';
+            img.style.transform = `translate(${zoomTransX}px, ${zoomTransY}px) scale(${zoomScale})`;
         }
 
         function shareCurrentPhoto() {
             if (navigator.clipboard) {
-                navigator.clipboard.writeText(currentModalOriginalUrl);
-                showToast('사진 원본 링크가 복사되었습니다!');
+                navigator.clipboard.writeText(currentPhotoUrl);
+                showToast('사진 주소가 복사되었습니다!');
             } else {
-                showToast('링크: ' + currentModalOriginalUrl);
+                showToast('사진 주소 복사를 지원하지 않는 브라우저입니다.');
             }
         }
 
+        // 줌 및 터치 제스처 초기화
         function initLightboxZoomEvents() {
             const wrapper = document.getElementById('lightbox-wrapper');
             const img = document.getElementById('lightbox-img');
             if (!wrapper || !img) return;
 
-            // Touch: Pinch-to-zoom & Drag-to-pan
+            let initialPinchDist = 0;
+            let initialScale = 1;
+            let lastTapTime = 0;
+
+            // 더블 탭 확대
+            wrapper.addEventListener('touchend', (e) => {
+                const currentTime = new Date().getTime();
+                const tapInterval = currentTime - lastTapTime;
+                if (tapInterval < 300 && tapInterval > 0) {
+                    e.preventDefault();
+                    if (zoomScale > 1.2) {
+                        resetZoom(true);
+                    } else {
+                        zoomScale = 2.5;
+                        zoomTransX = 0;
+                        zoomTransY = 0;
+                        applyZoomTransform(true);
+                    }
+                }
+                lastTapTime = currentTime;
+            });
+
+            // 핀치 줌 (모바일 터치)
             wrapper.addEventListener('touchstart', (e) => {
                 if (e.touches.length === 2) {
-                    initialPinchDistance = Math.hypot(
-                        e.touches[0].clientX - e.touches[1].clientX,
-                        e.touches[0].clientY - e.touches[1].clientY
+                    initialPinchDist = Math.hypot(
+                        e.touches[0].pageX - e.touches[1].pageX,
+                        e.touches[0].pageY - e.touches[1].pageY
                     );
-                    initialPinchScale = zoomScale;
-                } else if (e.touches.length === 1) {
-                    const currentTime = new Date().getTime();
-                    const tapDiff = currentTime - lastTapTime;
-                    if (tapDiff < 300 && tapDiff > 0) {
-                        // Double tap toggle zoom
-                        if (zoomScale > 1.2) {
-                            resetZoom(true);
-                        } else {
-                            zoomScale = 2.2;
-                            zoomTransX = 0;
-                            zoomTransY = 0;
-                            applyZoomTransform(true);
-                        }
-                        lastTapTime = 0;
-                        e.preventDefault();
-                        return;
-                    }
-                    lastTapTime = currentTime;
-
-                    if (zoomScale > 1) {
-                        isDragging = true;
-                        startDragX = e.touches[0].clientX - zoomTransX;
-                        startDragY = e.touches[0].clientY - zoomTransY;
-                    }
+                    initialScale = zoomScale;
+                } else if (e.touches.length === 1 && zoomScale > 1) {
+                    isDragging = true;
+                    startDragX = e.touches[0].pageX - zoomTransX;
+                    startDragY = e.touches[0].pageY - zoomTransY;
                 }
             }, { passive: false });
 
             wrapper.addEventListener('touchmove', (e) => {
-                if (e.touches.length === 2 && initialPinchDistance > 0) {
+                if (e.touches.length === 2) {
                     e.preventDefault();
                     const currentDist = Math.hypot(
-                        e.touches[0].clientX - e.touches[1].clientX,
-                        e.touches[0].clientY - e.touches[1].clientY
+                        e.touches[0].pageX - e.touches[1].pageX,
+                        e.touches[0].pageY - e.touches[1].pageY
                     );
-                    const newScale = initialPinchScale * (currentDist / initialPinchDistance);
-                    zoomScale = Math.min(Math.max(newScale, 0.8), 4.5);
-                    applyZoomTransform(false);
+                    if (initialPinchDist > 0) {
+                        const factor = currentDist / initialPinchDist;
+                        zoomScale = Math.min(Math.max(initialScale * factor, 1), 4.5);
+                        applyZoomTransform(false);
+                    }
                 } else if (e.touches.length === 1 && isDragging && zoomScale > 1) {
                     e.preventDefault();
-                    zoomTransX = e.touches[0].clientX - startDragX;
-                    zoomTransY = e.touches[0].clientY - startDragY;
+                    zoomTransX = e.touches[0].pageX - startDragX;
+                    zoomTransY = e.touches[0].pageY - startDragY;
                     applyZoomTransform(false);
                 }
             }, { passive: false });
 
             wrapper.addEventListener('touchend', (e) => {
+                if (e.touches.length < 2) {
+                    initialPinchDist = 0;
+                }
                 if (e.touches.length === 0) {
                     isDragging = false;
-                    initialPinchDistance = 0;
-                    if (zoomScale < 1.05) {
+                    if (zoomScale <= 1.05) {
                         resetZoom(true);
                     }
-                } else if (e.touches.length === 1 && zoomScale > 1) {
-                    isDragging = true;
-                    startDragX = e.touches[0].clientX - zoomTransX;
-                    startDragY = e.touches[0].clientY - zoomTransY;
                 }
             });
 
-            // Mouse wheel zoom (Desktop)
+            // 데스크톱 휠 줌
             wrapper.addEventListener('wheel', (e) => {
                 e.preventDefault();
                 const delta = e.deltaY * -0.002;
@@ -1406,7 +1501,7 @@
                 }
             }, { passive: false });
 
-            // Mouse drag (Desktop)
+            // 데스크톱 마우스 드래그
             wrapper.addEventListener('mousedown', (e) => {
                 if (zoomScale > 1) {
                     isDragging = true;
@@ -1433,6 +1528,7 @@
             });
         }
 
+        // 공유하기
         function sharePost(title, postId) {
             if (navigator.clipboard) {
                 const url = window.location.href.split('#')[0] + '#' + postId;
@@ -1443,7 +1539,7 @@
             }
         }
 
-        // Toast Helper
+        // 토스트 알림 헬퍼
         let toastTimeout;
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -1455,7 +1551,7 @@
             }, 2500);
         }
 
-        // Search Input Handler (Debounced)
+        // 검색어 입력 핸들러 (디바운스)
         let searchTimeout;
         const searchInput = document.getElementById('search-input');
         const searchClearBtn = document.getElementById('search-clear');
@@ -1477,7 +1573,7 @@
             applyFilter();
         }
 
-        // Tag Filter Handler
+        // 태그 칩 필터 핸들러
         document.getElementById('tags-container').addEventListener('click', (e) => {
             const chip = e.target.closest('.tag-chip');
             if (!chip) return;
@@ -1489,7 +1585,7 @@
             applyFilter();
         });
 
-        // Infinite Scroll Observer
+        // 무한 스크롤 옵저버
         const observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) {
                 if (renderedCount < filteredPosts.length) {
@@ -1500,12 +1596,12 @@
 
         observer.observe(document.getElementById('infinite-scroll-trigger'));
 
-        // ESC Key to close lightbox
+        // ESC 키로 라이트박스 닫기
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeLightbox();
         });
 
-        // Initial Load
+        // 초기 구동
         initLightboxZoomEvents();
         fetchPhotos();
     </script>
