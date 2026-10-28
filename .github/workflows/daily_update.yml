@@ -18,7 +18,7 @@ jobs:
 
       - name: 필요한 도구 설치
         run: |
-          pip install playwright
+          pip install playwright pymupdf requests
           playwright install chromium
 
       - name: 크롤링 실행
@@ -28,6 +28,6 @@ jobs:
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add photos.json
-          git commit -m "자동 업데이트: 새 사진 추가" || echo "업데이트할 내용 없음"
+          git add photos.json gbs/
+          git commit -m "자동 업데이트: 새 사진 및 GBS 지침서 추가" || echo "업데이트할 내용 없음"
           git push

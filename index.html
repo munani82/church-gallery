@@ -162,17 +162,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            padding: 8px 12px;
+            gap: 5px;
+            padding: 8px 6px;
             border: none;
             background: transparent;
             color: #64748b;
-            font-size: 0.88rem;
+            font-size: 0.84rem;
             font-weight: 600;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            white-space: nowrap;
         }
 
         .cat-tab-btn i {
@@ -272,6 +273,12 @@
             border-color: #fde68a;
         }
 
+        .author-avatar.gbs-avatar {
+            background: #dcfce7;
+            color: #15803d;
+            border-color: #bbf7d0;
+        }
+
         .author-meta {
             display: flex;
             flex-direction: column;
@@ -308,6 +315,31 @@
         .badge-bulletin {
             background: #fef3c7;
             color: #b45309;
+        }
+
+        .badge-gbs {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .pdf-download-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .pdf-download-pill:hover {
+            background: #dcfce7;
+            border-color: #86efac;
         }
 
         .post-category {
@@ -833,23 +865,28 @@
             </div>
         </div>
 
-        <!-- 분리된 카테고리 탭 (전체, 교회앨범, 주보) -->
+        <!-- 분리된 카테고리 탭 (전체, 교회앨범, 주보, GBS) -->
         <nav class="category-nav-wrapper">
             <div class="category-segmented-control">
                 <button class="cat-tab-btn active" data-category="all" onclick="selectCategory('all')">
                     <i class="fa-solid fa-layer-group"></i>
-                    <span>전체보기</span>
+                    <span>전체</span>
                     <span class="cat-badge-count" id="count-all">0</span>
                 </button>
                 <button class="cat-tab-btn" data-category="album" onclick="selectCategory('album')">
                     <i class="fa-solid fa-camera"></i>
-                    <span>교회앨범</span>
+                    <span>앨범</span>
                     <span class="cat-badge-count" id="count-album">0</span>
                 </button>
                 <button class="cat-tab-btn" data-category="bulletin" onclick="selectCategory('bulletin')">
                     <i class="fa-solid fa-book-bible"></i>
                     <span>주보</span>
                     <span class="cat-badge-count" id="count-bulletin">0</span>
+                </button>
+                <button class="cat-tab-btn" data-category="gbs" onclick="selectCategory('gbs')">
+                    <i class="fa-solid fa-seedling"></i>
+                    <span>GBS</span>
+                    <span class="cat-badge-count" id="count-gbs">0</span>
                 </button>
             </div>
         </nav>
@@ -944,6 +981,8 @@
         // 이미지 프록시 헬퍼 (HTTPS 혼합 컨텐츠 방지 및 빠른 로딩)
         function getSafeImageUrl(url) {
             if (!url) return '';
+            // 로컬 상대 경로(예: gbs/...)는 프록시를 거치지 않고 즉시 로드
+            if (!/^https?:\/\//i.test(url)) return url;
             const cleanUrl = url.replace(/^https?:\/\//i, '');
             return `https://images.weserv.nl/?url=${encodeURIComponent(cleanUrl)}`;
         }
@@ -959,12 +998,14 @@
                 
                 if (currentPost && currentPost.title === title && currentPost.category === itemCategory) {
                     currentPost.images.push(item.img);
+                    if (item.pdf && !currentPost.pdf) currentPost.pdf = item.pdf;
                 } else {
                     currentPost = {
                         id: 'post_' + index + '_' + Math.random().toString(36).substr(2, 5),
                         title: title,
                         category: itemCategory,
                         images: [item.img],
+                        pdf: item.pdf || null,
                         date: extractDate(title)
                     };
                     posts.push(currentPost);
@@ -1010,6 +1051,9 @@
                 if (category === 'bulletin') {
                     originLink.href = 'http://www.seodaegu.net/main/sub.html?pageCode=24';
                     originLink.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> 원본주보';
+                } else if (category === 'gbs') {
+                    originLink.href = 'https://www.365qt.com/QT/Gbs';
+                    originLink.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> 365QT';
                 } else {
                     originLink.href = 'http://www.seodaegu.net/main/sub.html?pageCode=25';
                     originLink.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> 원본게시판';
@@ -1021,7 +1065,7 @@
             applyFilter();
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            const catNames = { all: '전체', album: '교회앨범', bulletin: '주보' };
+            const catNames = { all: '전체', album: '교회앨범', bulletin: '주보', gbs: 'GBS 지침서' };
             showToast(`${catNames[category] || '카테고리'} 목록으로 전환되었습니다.`);
         }
 
@@ -1069,14 +1113,17 @@
             const countAll = allPosts.length;
             const countAlbum = allPosts.filter(p => p.category === 'album').length;
             const countBulletin = allPosts.filter(p => p.category === 'bulletin').length;
+            const countGbs = allPosts.filter(p => p.category === 'gbs').length;
 
             const elAll = document.getElementById('count-all');
             const elAlbum = document.getElementById('count-album');
             const elBulletin = document.getElementById('count-bulletin');
+            const elGbs = document.getElementById('count-gbs');
 
             if (elAll) elAll.textContent = countAll;
             if (elAlbum) elAlbum.textContent = countAlbum;
             if (elBulletin) elBulletin.textContent = countBulletin;
+            if (elGbs) elGbs.textContent = countGbs;
         }
 
         // 데이터 불러오기
@@ -1130,7 +1177,7 @@
             const feed = document.getElementById('gallery-feed');
             feed.innerHTML = '';
 
-            const catNames = { all: '', album: '앨범 ', bulletin: '주보 ' };
+            const catNames = { all: '', album: '앨범 ', bulletin: '주보 ', gbs: 'GBS ' };
             document.getElementById('posts-count').textContent = `${catNames[activeCategory] || ''}게시물 ${filteredPosts.length}개`;
 
             if (filteredPosts.length === 0) {
@@ -1182,6 +1229,7 @@
             const isSaved = userSavedIds.has(post.id);
             const imageCount = post.images.length;
             const isBulletin = post.category === 'bulletin';
+            const isGbs = post.category === 'gbs';
 
             // 태그 추출
             const matchedTags = extractTagsFromTitle(post.title);
@@ -1212,12 +1260,28 @@
                 }
             });
 
-            const badgeHtml = isBulletin
-                ? `<span class="post-badge badge-bulletin"><i class="fa-solid fa-book-bible"></i> 주보</span>`
-                : `<span class="post-badge badge-album"><i class="fa-solid fa-camera"></i> 앨범</span>`;
+            let badgeHtml = `<span class="post-badge badge-album"><i class="fa-solid fa-camera"></i> 앨범</span>`;
+            if (isBulletin) {
+                badgeHtml = `<span class="post-badge badge-bulletin"><i class="fa-solid fa-book-bible"></i> 주보</span>`;
+            } else if (isGbs) {
+                badgeHtml = `<span class="post-badge badge-gbs"><i class="fa-solid fa-seedling"></i> GBS 지침서</span>`;
+            }
 
-            const avatarClass = isBulletin ? 'author-avatar bulletin-avatar' : 'author-avatar';
-            const avatarIcon = isBulletin ? 'fa-solid fa-book-open' : 'fa-solid fa-church';
+            let avatarClass = 'author-avatar';
+            let avatarIcon = 'fa-solid fa-church';
+            if (isBulletin) {
+                avatarClass = 'author-avatar bulletin-avatar';
+                avatarIcon = 'fa-solid fa-book-open';
+            } else if (isGbs) {
+                avatarClass = 'author-avatar gbs-avatar';
+                avatarIcon = 'fa-solid fa-seedling';
+            }
+
+            const defaultSubText = isGbs ? 'GBS 인도자 지침서' : (isBulletin ? '주일 주보' : '교회 갤러리');
+            const unitLabel = isGbs ? '면' : '장';
+            const pdfButtonHtml = post.pdf
+                ? `<a href="${post.pdf}" target="_blank" download class="pdf-download-pill" title="PDF 파일 다운로드"><i class="fa-solid fa-file-pdf"></i> PDF 저장</a>`
+                : '';
 
             card.innerHTML = `
                 <div class="post-header">
@@ -1230,12 +1294,15 @@
                                 <span class="author-name">서대구제일교회</span>
                                 ${badgeHtml}
                             </div>
-                            <span class="post-category">${post.date ? '📅 ' + post.date : (isBulletin ? '주일 주보' : '교회 갤러리')} · 사진 ${imageCount}장</span>
+                            <span class="post-category">${post.date ? '📅 ' + post.date : defaultSubText} · ${isGbs ? '지침서' : '사진'} ${imageCount}${unitLabel}</span>
                         </div>
                     </div>
-                    <button class="action-btn" title="공유하기" onclick="sharePost('${post.title.replace(/'/g, "\\'")}', '${post.id}')">
-                        <i class="fa-regular fa-paper-plane" style="font-size: 1.1rem; color:#64748b;"></i>
-                    </button>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        ${pdfButtonHtml}
+                        <button class="action-btn" title="공유하기" onclick="sharePost('${post.title.replace(/'/g, "\\'")}', '${post.id}')">
+                            <i class="fa-regular fa-paper-plane" style="font-size: 1.1rem; color:#64748b;"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="carousel-wrapper" data-total="${imageCount}">
