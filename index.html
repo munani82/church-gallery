@@ -865,15 +865,10 @@
             </div>
         </div>
 
-        <!-- 분리된 카테고리 탭 (전체, 교회앨범, 주보, GBS) -->
+        <!-- 분리된 카테고리 탭 (앨범, 주보, GBS) -->
         <nav class="category-nav-wrapper">
             <div class="category-segmented-control">
-                <button class="cat-tab-btn active" data-category="all" onclick="selectCategory('all')">
-                    <i class="fa-solid fa-layer-group"></i>
-                    <span>전체</span>
-                    <span class="cat-badge-count" id="count-all">0</span>
-                </button>
-                <button class="cat-tab-btn" data-category="album" onclick="selectCategory('album')">
+                <button class="cat-tab-btn active" data-category="album" onclick="selectCategory('album')">
                     <i class="fa-solid fa-camera"></i>
                     <span>앨범</span>
                     <span class="cat-badge-count" id="count-album">0</span>
@@ -966,7 +961,7 @@
         let filteredPosts = [];
         let renderedCount = 0;
         const PAGE_SIZE = 8;
-        let activeCategory = 'all'; // 'all', 'album', 'bulletin'
+        let activeCategory = 'album'; // 'album', 'bulletin', 'gbs'
         let activeTag = 'all';
         let searchQuery = '';
         const userSavedIds = new Set(JSON.parse(localStorage.getItem('church_saved_posts') || '[]'));
@@ -1065,7 +1060,7 @@
             applyFilter();
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            const catNames = { all: '전체', album: '교회앨범', bulletin: '주보', gbs: 'GBS 지침서' };
+            const catNames = { album: '앨범', bulletin: '주보', gbs: 'GBS 지침서' };
             showToast(`${catNames[category] || '카테고리'} 목록으로 전환되었습니다.`);
         }
 
@@ -1083,9 +1078,7 @@
 
         // 현재 카테고리에 맞는 동적 태그 생성
         function generateDynamicTags() {
-            const currentCatPosts = (activeCategory === 'all') 
-                ? allPosts 
-                : allPosts.filter(p => p.category === activeCategory);
+            const currentCatPosts = allPosts.filter(p => p.category === activeCategory);
 
             const counts = {};
             currentCatPosts.forEach(post => {
@@ -1110,17 +1103,14 @@
 
         // 카테고리별 뱃지 카운트 갱신
         function updateCategoryCounts() {
-            const countAll = allPosts.length;
             const countAlbum = allPosts.filter(p => p.category === 'album').length;
             const countBulletin = allPosts.filter(p => p.category === 'bulletin').length;
             const countGbs = allPosts.filter(p => p.category === 'gbs').length;
 
-            const elAll = document.getElementById('count-all');
             const elAlbum = document.getElementById('count-album');
             const elBulletin = document.getElementById('count-bulletin');
             const elGbs = document.getElementById('count-gbs');
 
-            if (elAll) elAll.textContent = countAll;
             if (elAlbum) elAlbum.textContent = countAlbum;
             if (elBulletin) elBulletin.textContent = countBulletin;
             if (elGbs) elGbs.textContent = countGbs;
@@ -1143,9 +1133,6 @@
                 updateCategoryCounts();
                 generateDynamicTags();
                 applyFilter();
-
-                const totalPhotosCount = rawPhotos.length;
-                document.getElementById('photos-total-count').textContent = `총 ${totalPhotosCount.toLocaleString()}장의 사진`;
                 
                 if (isRefresh) {
                     showToast('최신 사진 및 주보 목록을 불러왔습니다!');
@@ -1167,7 +1154,7 @@
         // 필터 및 검색 적용 로직
         function applyFilter() {
             filteredPosts = allPosts.filter(post => {
-                const matchesCategory = (activeCategory === 'all') || (post.category === activeCategory);
+                const matchesCategory = post.category === activeCategory;
                 const matchesTag = (activeTag === 'all') || post.title.includes(activeTag);
                 const matchesSearch = !searchQuery || post.title.toLowerCase().includes(searchQuery.toLowerCase());
                 return matchesCategory && matchesTag && matchesSearch;
@@ -1177,8 +1164,12 @@
             const feed = document.getElementById('gallery-feed');
             feed.innerHTML = '';
 
-            const catNames = { all: '', album: '앨범 ', bulletin: '주보 ', gbs: 'GBS ' };
+            const catNames = { album: '앨범 ', bulletin: '주보 ', gbs: 'GBS ' };
             document.getElementById('posts-count').textContent = `${catNames[activeCategory] || ''}게시물 ${filteredPosts.length}개`;
+
+            const totalImagesCount = filteredPosts.reduce((sum, p) => sum + p.images.length, 0);
+            const unitLabel = activeCategory === 'gbs' ? '면의 지침서' : (activeCategory === 'bulletin' ? '면의 주보' : '장의 사진');
+            document.getElementById('photos-total-count').textContent = `총 ${totalImagesCount.toLocaleString()}${unitLabel}`;
 
             if (filteredPosts.length === 0) {
                 feed.innerHTML = `
