@@ -988,7 +988,8 @@
             let currentPost = null;
 
             flatPhotos.forEach((item, index) => {
-                const title = (item.title || '서대구제일교회 사진').trim();
+                const rawTitle = (item.title || '서대구제일교회 사진').replace(/[\x00-\x1F\x7F]+/g, ' ').replace(/\s+/g, ' ').trim();
+                const title = rawTitle;
                 const itemCategory = item.category || (item.img && item.img.includes('www24') ? 'bulletin' : 'album');
                 
                 if (currentPost && currentPost.title === title && currentPost.category === itemCategory) {

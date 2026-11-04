@@ -119,8 +119,10 @@ def crawl_gbs_guides(existing_urls):
             first_text_lines = [line.strip() for line in doc[0].get_text().splitlines() if line.strip()]
             lesson_subtitle = ""
             if first_text_lines:
-                # 예: '1과: 회복의 최우선은 예배!(58분)' -> '(58분)' 제거 후 깔끔하게 표시
-                raw_sub = re.sub(r"\(\d+분\)", "", first_text_lines[0]).strip()
+                # PDF 폰트 인코딩으로 인해 공백이 제어문자(\x01 등)로 추출되는 현상 보정 및 '(58분)' 제거
+                clean_line = re.sub(r"[\x00-\x1f\x7f-\x9f]+", " ", first_text_lines[0])
+                raw_sub = re.sub(r"\(\d+분\)", "", clean_line)
+                raw_sub = re.sub(r"\s+", " ", raw_sub).strip()
                 lesson_subtitle = f" - {raw_sub}"
 
             dt_obj = datetime.strptime(target_date, "%Y-%m-%d")
@@ -160,8 +162,11 @@ async def get_photos():
             print(f"기존 데이터 로드 실패: {e}")
             existing_data = []
 
-    # 기존 데이터 카테고리 필드 보정 (구버전 호환)
+    # 기존 데이터 카테고리 필드 및 제어문자 보정 (구버전 호환)
     for item in existing_data:
+        if "title" in item and isinstance(item["title"], str):
+            cleaned_t = re.sub(r"[\x00-\x1f\x7f-\x9f]+", " ", item["title"])
+            item["title"] = re.sub(r"\s+", " ", cleaned_t).strip()
         if "category" not in item:
             img_url = item.get("img", "")
             item["category"] = "bulletin" if "www24" in img_url else "album"
